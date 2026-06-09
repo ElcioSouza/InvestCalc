@@ -10,3 +10,5 @@ export {
   generateId,
   clampPercent,
 } from './format'
+
+export { fetchSelicRate } from './selic'

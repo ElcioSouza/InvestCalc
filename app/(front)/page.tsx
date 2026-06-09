@@ -4,6 +4,7 @@ import { Header, ToastContainer, DecorativeGlowBackdrop } from '@front/component
 
 export default function DashboardPage() {
 
+
   return (
     <>
       <ToastContainer />
@@ -13,6 +14,7 @@ export default function DashboardPage() {
 
         <div className="dashboard-content mx-auto max-w-7xl px-4 py-8 lg:py-6 relative">
           <Header />
+       
         </div>
       </main>
     </>

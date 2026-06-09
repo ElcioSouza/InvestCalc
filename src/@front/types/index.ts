@@ -1,5 +1,6 @@
 export type {
   TabType,
   ToastType,
-  Toast
+  Toast,
+  RateType
 } from './investment'
