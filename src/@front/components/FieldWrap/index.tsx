@@ -1,5 +1,5 @@
 import { AlertCircle } from 'lucide-react'
-import type { FieldWrapProps } from './type'
+import { FieldWrapProps } from './type'
 
 export function FieldWrap({ label, icon, error, children }: FieldWrapProps) {
   return (

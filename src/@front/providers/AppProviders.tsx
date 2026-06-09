@@ -1,6 +1,4 @@
-import {
-  ToastProvider
-} from '@front/providers'
+import { ToastProvider } from './ToastContext'
 
 interface AppProvidersProps {
   children: React.ReactNode
