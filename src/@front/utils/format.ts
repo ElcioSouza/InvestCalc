@@ -1,5 +1,7 @@
 
 
+import { IR_BRACKETS } from '@front/constants'
+
 export function formatBRL(value: number): string {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -42,6 +44,9 @@ export function toISO(br: string): string {
 export function calcProfitPercent(capital: number, profit: number): number {
   if (!capital) return 0
   return (profit / capital) * 100
+}
+export function getIRAliquota(days: number): string {
+  return IR_BRACKETS.find((b) => days <= b.maxDays)?.rate ?? '15,0%'
 }
 
 export function toUpperLabel(str: string): string {
