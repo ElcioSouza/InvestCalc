@@ -56,8 +56,7 @@ INTERNAL_API_BASE_URL=https://apiapp.infinityfreeapp.com
 
 | Variável | Escopo | Descrição |
 |----------|--------|-----------|
-| `INTERNAL_API_BASE_URL` | Servidor | URL do backend externo onde a API proxy encaminha as requisições. Use `https://apiapp.infinityfreeapp.com` |
-| `NEXT_PUBLIC_API_URL` | Cliente | URL base da API no front-end. Opcional, padrão `''` (mesmo domínio) |
+| `INTERNAL_API_BASE_URL` | Servidor | URL do backend externo da API: `https://apiapp.infinityfreeapp.com` |
 
 ## Funcionalidades
 
@@ -114,7 +113,7 @@ app/
 
 src/
 ├── @front/                         # Código do frontend
-│   ├── components/                 # 16 componentes UI
+│   ├── components/                 # 15 componentes UI
 │   ├── constants/                  # Configs, defaults, alíquotas IR
 │   ├── hooks/                      # useSelicRate
 │   ├── integrations/               # InvestmentRepository (HTTP client)
@@ -155,10 +154,3 @@ Rota catch-all que delega para o controller server-side. Endpoints consumidos pe
 | `POST` | `/api/calculate` | Salvar novo investimento |
 | `PUT` | `/api/calculate/{id}` | Atualizar investimento |
 | `DELETE` | `/api/calculate/{id}` | Excluir investimento |
-
-## Arquitetura
-
-```
-Apresentação → Providers → Services → Repository → API Route → Backend Externo
-(components)   (Context)   (Lógica)    (HTTP)       (Proxy)     (InfinityFree)
-```

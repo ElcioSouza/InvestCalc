@@ -5,18 +5,12 @@ import { createContext, useContext, useMemo, type ReactNode } from 'react'
 import { InvestmentRepository } from '@front/integrations/res'
 import { HistoryService, SimulatorService } from '@front/services'
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 interface ServicesContextValue {
   simulatorService: SimulatorService
   historyService: HistoryService
 }
 
-// ─── Context ──────────────────────────────────────────────────────────────────
-
 const ServicesContext = createContext<ServicesContextValue | null>(null)
-
-// ─── Provider ─────────────────────────────────────────────────────────────────
 
 export function ServicesProvider({ children }: { children: ReactNode }) {
   const value = useMemo(() => {
@@ -34,8 +28,6 @@ export function ServicesProvider({ children }: { children: ReactNode }) {
     </ServicesContext.Provider>
   )
 }
-
-// ─── Hook ─────────────────────────────────────────────────────────────────────
 
 export function useServices(): ServicesContextValue {
   const ctx = useContext(ServicesContext)
