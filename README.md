@@ -1,6 +1,6 @@
 # InvestCalc
 
-Calculadora de renda fixa brasileira para simular e comparar investimentos em CDB, LCI e LCA com taxas CDI e SELIC em tempo real.
+Simule e compare investimentos de renda fixa — CDB, LCI e LCA — com cálculos instantâneos de IR, IOF e rentabilidade líquida. Consulta a SELIC em tempo real via API do Banco Central.
 
 ## Tech Stack
 
