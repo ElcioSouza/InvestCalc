@@ -120,7 +120,7 @@ export function InvestmentForm({
       <div
         className="dashboard-card-tight rounded-xl p-3 flex items-center gap-3 bg-[rgba(255,255,255,0.015)] border-[1px_solid_rgba(212,168,67,0.08)]"
       >
-        <span className="text-2xl">{typeInfo.icon}</span>
+        <span className="text-2xl"><typeInfo.icon size={22} strokeWidth={1.5} /></span>
         <div className="flex-1 min-w-0">
           <div className="text-xs font-bold text-[#D4A843]">{typeInfo.label}</div>
           <div className="text-[11px] text-[#555] truncate">{typeInfo.desc}</div>

@@ -1,3 +1,5 @@
+import type { LucideIcon } from 'lucide-react'
+
 export type RateType = 'pre' | 'pos'
 export type InvestmentType = 'cdb' | 'lci' | 'lca'
 export type TabType = 'simular' | 'salvar' | 'historico'
@@ -56,7 +58,7 @@ export interface Toast {
 export interface InvestmentTypeConfig {
   label: string
   desc: string
-  icon: string
+  icon: LucideIcon
   color: string
   taxed: boolean
 }

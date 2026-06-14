@@ -1,3 +1,4 @@
+import { BarChart3 } from 'lucide-react'
 import { InvestmentForm } from '../InvestmentForm'
 import { InvestmentResult } from '../InvestmentResult'
 import type { SimulatorViewProps } from './type'
@@ -44,7 +45,7 @@ function SimulatorPlaceholder() {
       <div
         className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 bg-[rgba(212,168,67,0.05)] border border-[rgba(212,168,67,0.1)]"
       >
-        <span className="text-2xl" role="img" aria-label="gráfico">📊</span>
+        <BarChart3 size={28} className="text-[#D4A843]" strokeWidth={1.5} />
       </div>
       <p className="text-[#555] text-sm">Preencha os parâmetros e clique em calcular</p>
       <p className="text-[#3A3F4A] text-xs mt-1">Os resultados aparecerão aqui</p>

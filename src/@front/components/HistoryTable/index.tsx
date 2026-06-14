@@ -90,7 +90,7 @@ export function HistoryTable({
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-sm">{info?.icon}</span>
+                          <span className="text-sm">{info?.icon && <info.icon size={14} strokeWidth={1.5} />}</span>
                           <span className="text-xs font-bold text-white">
                             {toUpperLabel(item.input.investment_type)}
                           </span>

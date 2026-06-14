@@ -1,8 +1,20 @@
-import { INVESTMENT_TYPE_CONFIG } from '@front/constants'
+import { Landmark, Home, Wheat } from 'lucide-react'
 import type { InvestmentType } from '@front/types'
 import type { InvestmentTypeSelectorProps } from './type'
 
 const TYPES: InvestmentType[] = ['cdb', 'lci', 'lca']
+
+const TYPE_ICONS: Record<InvestmentType, typeof Landmark> = {
+  cdb: Landmark,
+  lci: Home,
+  lca: Wheat,
+}
+
+const TYPE_INFO: Record<InvestmentType, { label: string; taxed: boolean }> = {
+  cdb: { label: 'CDB', taxed: true },
+  lci: { label: 'LCI', taxed: false },
+  lca: { label: 'LCA', taxed: false },
+}
 
 export function InvestmentTypeSelector({ selected, register }: InvestmentTypeSelectorProps) {
   return (
@@ -12,7 +24,8 @@ export function InvestmentTypeSelector({ selected, register }: InvestmentTypeSel
       </label>
       <div className="grid grid-cols-3 gap-2">
         {TYPES.map((type) => {
-          const info = INVESTMENT_TYPE_CONFIG[type]
+          const Icon = TYPE_ICONS[type]
+          const info = TYPE_INFO[type]
           const isSelected = selected === type
           return (
             <label key={type} className="cursor-pointer block">
@@ -29,7 +42,11 @@ export function InvestmentTypeSelector({ selected, register }: InvestmentTypeSel
                     : 'border-[rgba(255,255,255,0.05)] hover:border-[rgba(212,168,67,0.25)] bg-[rgba(255,255,255,0.01)]'
                 }`}
               >
-                <span className="text-xl">{info.icon}</span>
+                <Icon
+                  size={20}
+                  className={isSelected ? 'text-[#D4A843]' : 'text-[#8A94A6]'}
+                  strokeWidth={1.5}
+                />
                 <span
                   className={`text-[11px] font-black tracking-wider ${
                     isSelected ? 'text-[#D4A843]' : 'text-[#8A94A6]'
@@ -38,7 +55,7 @@ export function InvestmentTypeSelector({ selected, register }: InvestmentTypeSel
                   {info.label}
                 </span>
                 {!info.taxed && (
-                    <span
+                  <span
                     className="text-[9px] font-semibold text-[#0D9E6E] bg-[rgba(13,158,110,0.1)] py-0.5 px-1.5 rounded"
                   >
                     IR Isento

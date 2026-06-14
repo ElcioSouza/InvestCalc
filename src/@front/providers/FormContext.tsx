@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, type ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { investmentFormSchema, InvestmentFormData } from '@front/schemas'
@@ -29,17 +29,27 @@ export function InvestmentFormProvider({ children }: { children: ReactNode }) {
   const investmentType = form.watch('investment_type')
   const rateType       = form.watch('rate_type')
 
+  useEffect(() => {
+    form.clearErrors()
+    if (rateType === 'pos') {
+      form.setValue('pre_rate', undefined, { shouldValidate: false })
+    } else {
+      form.setValue('cdi', undefined, { shouldValidate: false })
+      form.setValue('selic_meta', undefined, { shouldValidate: false })
+    }
+  }, [rateType])
+
   function buildPayload(data: InvestmentFormData): InvestmentPayload {
     const base: InvestmentPayload = {
       investment_type:  data.investment_type,
       rate_type:        data.rate_type,
-      capital:          data.capital,
+      capital:          data.capital!,
       application_date: toISO(data.application_date),
-      months:           data.months,
+      months:           data.months!,
     }
     return data.rate_type === 'pos'
-      ? { ...base, cdi: data.cdi, selic_meta: data.selic_meta }
-      : { ...base, pre_rate: data.pre_rate }
+      ? { ...base, cdi: data.cdi ?? undefined, selic_meta: data.selic_meta ?? undefined }
+      : { ...base, pre_rate: data.pre_rate ?? undefined }
   }
 
   return (

@@ -56,7 +56,7 @@ export function InvestmentResult({ data, onClose, compact = false }: InvestmentR
         <div className="relative flex items-start justify-between">
           <div>
             <div className="mb-2 flex flex-wrap items-center gap-2">
-              <span className="text-base">{info.icon}</span>
+              <span className="text-base"><info.icon size={16} strokeWidth={1.5} /></span>
               <span className="text-xs font-black uppercase tracking-wider text-[#D4A843]">{info.label}</span>
               <span className="text-[11px] text-[#555]">·</span>
               <span className="text-[11px] text-[#555]">{getRateTypeLabel(input.rate_type)}</span>

@@ -1,24 +1,25 @@
+import { Landmark, Home, Wheat } from 'lucide-react'
 import type { InvestmentType, InvestmentTypeConfig, TabType } from '@front/types'
 
 export const INVESTMENT_TYPE_CONFIG: Record<InvestmentType, InvestmentTypeConfig> = {
   cdb: {
     label: 'CDB',
     desc: 'Certificado de Depósito Bancário',
-    icon: '\u{1F3E6}',
+    icon: Landmark,
     color: '#D4A843',
     taxed: true,
   },
   lci: {
     label: 'LCI',
     desc: 'Letra de Crédito Imobiliário',
-    icon: '\u{1F3E0}',
+    icon: Home,
     color: '#0D9E6E',
     taxed: false,
   },
   lca: {
     label: 'LCA',
     desc: 'Letra de Crédito do Agronegócio',
-    icon: '\u{1F33E}',
+    icon: Wheat,
     color: '#6366F1',
     taxed: false,
   },
@@ -42,11 +43,12 @@ export const TAB_LABELS: Record<TabType, string> = {
 export const DEFAULT_FORM_VALUES = {
   investment_type: 'cdb' as const,
   rate_type:       'pos' as const,
-  capital:         null,
-  months:          null,
-  cdi:             null,
+  capital:         undefined,
+  months:          undefined,
+  cdi:             undefined,
+  pre_rate:        undefined,
   selic_meta:      14.25,
-} as const
+}
 
 export const API_ENDPOINTS = {
   calculate:     '/api/calculate',
