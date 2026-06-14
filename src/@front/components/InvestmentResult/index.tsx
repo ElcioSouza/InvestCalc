@@ -2,7 +2,8 @@ import {
   ArrowUpRight, X, Shield, CheckCircle2, ChevronRight,
   BarChart3, Percent
 } from 'lucide-react'
-import { StatCard, BarRow } from '@front/components'
+import { StatCard } from '../StatCard'
+import { BarRow } from '../BarRow'
 import { INVESTMENT_TYPE_CONFIG } from '@front/constants'
 import { formatBRL, formatPercent, formatDate, getIRAliquota, getRateTypeLabel, calcProfitPercent, clampPercent } from '@front/utils'
 import type { InvestmentResultProps } from './type'

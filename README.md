@@ -1,36 +1,164 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# InvestCalc
 
-## Getting Started
+Calculadora de renda fixa brasileira para simular e comparar investimentos em CDB, LCI e LCA com taxas CDI e SELIC em tempo real.
 
-First, run the development server:
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **UI:** React 19 + TypeScript
+- **Estilo:** Tailwind
+- **Formulários:** React Hook Form + Zod
+- **Ícones:** Lucide React
+- **Fonte:** Inter (Google Fonts)
+
+## Início Rápido
 
 ```bash
+# Instalar dependências
+npm install
+
+# Iniciar servidor de desenvolvimento
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build de produção
+npm run build
+
+# Iniciar em produção
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O app estará disponível em [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Script | Descrição |
+|--------|-----------|
+| `npm run dev` | Servidor de desenvolvimento |
+| `npm run build` | Build de produção |
+| `npm start` | Servidor de produção |
+| `npm run lint` | Verificação de lint (ESLint) |
 
-## Learn More
+## Variáveis de Ambiente
 
-To learn more about Next.js, take a look at the following resources:
+O projeto já possui um arquivo `.env.example` com as variáveis necessárias. Copie para criar seu `.env`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+cp .env.example .env
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Ou crie manualmente o arquivo `.env` na raiz do projeto:
 
-## Deploy on Vercel
+```env
+INTERNAL_API_BASE_URL=https://apiapp.infinityfreeapp.com
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+> O Next.js lê `.env` nativamente. Não é preciso instalar nenhuma biblioteca adicional.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variável | Escopo | Descrição |
+|----------|--------|-----------|
+| `INTERNAL_API_BASE_URL` | Servidor | URL do backend externo onde a API proxy encaminha as requisições. Use `https://apiapp.infinityfreeapp.com` |
+| `NEXT_PUBLIC_API_URL` | Cliente | URL base da API no front-end. Opcional, padrão `''` (mesmo domínio) |
+
+## Funcionalidades
+
+### Tipos de Investimento
+
+- **CDB** — Certificado de Depósito Bancário (tributado: IR + IOF)
+- **LCI** — Letra de Crédito Imobiliário (isento de IR/IOF)
+- **LCA** — Letra de Crédito do Agronegócio (isento de IR/IOF)
+
+### Tipos de Taxa
+
+- **Pós-fixado** — Atrelado à variação do CDI
+- **Pré-fixado** — Taxa fixa anual (% a.a.)
+
+### Abas
+
+1. **Simular** — Preencha os parâmetros e obtenha o cálculo instantâneo
+2. **Salvar** — Persiste a simulação no backend
+3. **Histórico** — Visualize investimentos salvos, detalhes e exclusão
+
+### Resultados Exibidos
+
+- Montante líquido final
+- Lucro bruto e líquido
+- Lucro mensal / diário
+- IOF e Imposto de Renda (alíquota regressiva: 22,5% → 15%)
+- Selo de isenção para LCI/LCA
+- Gráfico de barras (Capital × Lucro × Impostos × Líquido)
+- Datas de aplicação e resgate
+- Dias úteis corridos
+
+### Extras
+
+- Consulta da **SELIC em tempo real** via API do Banco Central do Brasil
+- Validação de formulários com Zod
+- Toast notifications para feedback
+- Design responsivo com dark theme
+
+## Estrutura do Projeto
+
+```
+app/
+├── layout.tsx                      # Root layout
+├── globals.css                     # Estilos globais (Tailwind, animações)
+├── error.tsx                       # Error boundary global
+├── not-found.tsx                   # Página 404
+├── (front)/
+│   ├── layout.tsx                  # Provider tree (AppProviders)
+│   ├── page.tsx                    # Dashboard principal
+│   └── error.tsx                   # Error boundary do route group
+└── (server)/
+    └── api/calculate/[[...slug]]/
+        └── route.ts                # API catch-all
+
+src/
+├── @front/                         # Código do frontend
+│   ├── components/                 # 16 componentes UI
+│   ├── constants/                  # Configs, defaults, alíquotas IR
+│   ├── hooks/                      # useSelicRate
+│   ├── integrations/               # InvestmentRepository (HTTP client)
+│   ├── providers/                  # 5 React Context providers
+│   ├── schemas/                    # Validação Zod
+│   ├── services/                   # SimulatorService, HistoryService
+│   ├── types/                      # Interfaces TypeScript
+│   └── utils/                      # formatação BRL, %, datas
+├── @server/                        # Código server-side
+│   ├── controllers/                # CalculateController
+│   ├── integrations/               # Proxy API externa + antibot AES
+│   └── utils/                      # handleRoute, SystemError
+├── @global/                        # Código compartilhado
+│   └── utils/                      # DateUtil
+└── @types/                         # Declarações de tipo globais
+```
+
+## Path Aliases
+
+| Alias | Caminho |
+|-------|---------|
+| `@front/*` | `src/@front/*` |
+| `@server/*` | `src/@server/*` |
+| `@global/*` | `src/@global/*` |
+| `@types/*` | `src/@types/*` |
+
+## API
+
+### `GET/POST/PUT/DELETE /api/calculate/[[...slug]]`
+
+Rota catch-all que delega para o controller server-side. Endpoints consumidos pelo frontend:
+
+| Método | URL | Descrição |
+|--------|-----|-----------|
+| `GET` | `/api/calculate` | Listar investimentos salvos |
+| `GET` | `/api/calculate?{params}` | Simular investimento |
+| `GET` | `/api/calculate/{id}` | Buscar investimento por ID |
+| `POST` | `/api/calculate` | Salvar novo investimento |
+| `PUT` | `/api/calculate/{id}` | Atualizar investimento |
+| `DELETE` | `/api/calculate/{id}` | Excluir investimento |
+
+## Arquitetura
+
+```
+Apresentação → Providers → Services → Repository → API Route → Backend Externo
+(components)   (Context)   (Lógica)    (HTTP)       (Proxy)     (InfinityFree)
+```

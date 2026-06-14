@@ -1,0 +1,67 @@
+import { InvestmentForm } from '../InvestmentForm'
+import { InvestmentResult } from '../InvestmentResult'
+import type { SimulatorViewProps } from './type'
+
+export function SimulatorView({
+  tab,
+  form,
+  investmentType,
+  rateType,
+  simulator,
+  onSubmitSimulate,
+  onSubmitSave,
+}: SimulatorViewProps) {
+  const { result, isLoading, clearResult } = simulator
+
+  return (
+    <div className="dashboard-grid grid grid-cols-1 xl:grid-cols-[460px_1fr] gap-6">
+      <InvestmentForm
+        mode={tab}
+        investmentType={investmentType}
+        rateType={rateType}
+        errors={form.formState.errors}
+        isLoading={isLoading}
+        register={form.register}
+        onSubmit={tab === 'simular' ? onSubmitSimulate : onSubmitSave}
+      />
+
+      <div>
+        {!result && !isLoading && <SimulatorPlaceholder />}
+        {isLoading && <SimulatorLoading />}
+        {result && !isLoading && (
+          <InvestmentResult data={result} onClose={clearResult} />
+        )}
+      </div>
+    </div>
+  )
+}
+
+function SimulatorPlaceholder() {
+  return (
+    <div
+      className="dashboard-empty card-surface rounded-2xl flex flex-col items-center justify-center py-24 border-dashed border-[rgba(212,168,67,0.12)]"
+    >
+      <div
+        className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 bg-[rgba(212,168,67,0.05)] border border-[rgba(212,168,67,0.1)]"
+      >
+        <span className="text-2xl" role="img" aria-label="gráfico">📊</span>
+      </div>
+      <p className="text-[#555] text-sm">Preencha os parâmetros e clique em calcular</p>
+      <p className="text-[#3A3F4A] text-xs mt-1">Os resultados aparecerão aqui</p>
+    </div>
+  )
+}
+
+function SimulatorLoading() {
+  return (
+    <div
+      className="dashboard-empty card-surface card-border-surface rounded-2xl flex flex-col items-center justify-center py-24 border"
+    >
+      <div className="shimmer w-24 h-24 rounded-2xl mb-5" />
+      <p className="text-[#D4A843] text-sm font-medium animate-pulse">
+        Consultando Banco Central do Brasil...
+      </p>
+      <p className="text-[#555] text-xs mt-1">Buscando taxa CDI em tempo real</p>
+    </div>
+  )
+}

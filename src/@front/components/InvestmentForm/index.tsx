@@ -3,7 +3,7 @@
 import { RefreshCw, Zap, PlusCircle, DollarSign, Calendar, Clock, Percent, BarChart3, Shield } from 'lucide-react'
 import { InvestmentTypeSelector } from '../InvestmentTypeSelector'
 import { RateTypeSelector } from '../RateTypeSelector'
-import { FieldWrap } from '@front/components'
+import { FieldWrap } from '../FieldWrap'
 import { INVESTMENT_TYPE_CONFIG } from '@front/constants'
 import type { InvestmentFormProps } from './type'
 

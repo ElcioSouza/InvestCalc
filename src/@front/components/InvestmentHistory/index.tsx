@@ -1,4 +1,6 @@
-import { InvestmentResult, EmptyDetail, HistoryTable } from '@front/components'
+import { InvestmentResult } from '../InvestmentResult'
+import { EmptyDetail } from '../EmptyDetail'
+import { HistoryTable } from '../HistoryTable'
 import type { InvestmentHistoryProps } from './type'
 
 export function InvestmentHistory({ history }: InvestmentHistoryProps) {

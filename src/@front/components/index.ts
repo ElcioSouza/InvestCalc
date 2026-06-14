@@ -12,3 +12,5 @@ export { HistoryTable } from './HistoryTable'
 export { StatCard } from './StatCard'
 export { BarRow } from './BarRow'
 export { TabBar } from './TabBar'
+export { SimulatorView } from './SimulatorView'
+
