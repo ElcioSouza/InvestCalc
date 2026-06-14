@@ -1,31 +1,22 @@
 import { z } from 'zod'
 
-function toNumberInput(value: unknown) {
-  if (typeof value === 'number' && Number.isNaN(value)) return undefined
-  return value
-}
-
 function requiredPositiveNumber(fieldLabel: string, maxValue?: number, maxMessage?: string) {
-  return z.preprocess(
-    toNumberInput,
-    z.number({ error: `Informe ${fieldLabel.toLowerCase()}` })
-      .positive({ message: `${fieldLabel} deve ser maior que zero` })
-      .refine((value) => typeof maxValue !== 'number' || value <= maxValue, {
-        message: maxMessage ?? `${fieldLabel} ultrapassa o valor máximo`,
-      }),
-  )
+  return z
+    .number({ error: `Informe ${fieldLabel.toLowerCase()}` })
+    .positive({ message: `${fieldLabel} deve ser maior que zero` })
+    .refine((value) => typeof maxValue !== 'number' || value <= maxValue, {
+      message: maxMessage ?? `${fieldLabel} ultrapassa o valor máximo`,
+    })
 }
 
 function optionalPositiveNumber(fieldLabel: string, maxValue?: number, maxMessage?: string) {
-  return z.preprocess(
-    toNumberInput,
-    z.number({ error: `Informe ${fieldLabel.toLowerCase()}` })
-      .positive({ message: `${fieldLabel} deve ser positivo` })
-      .refine((value) => typeof maxValue !== 'number' || value <= maxValue, {
-        message: maxMessage ?? `${fieldLabel} ultrapassa o valor máximo`,
-      })
-      .optional(),
-  )
+  return z
+    .number({ error: `Informe ${fieldLabel.toLowerCase()}` })
+    .positive({ message: `${fieldLabel} deve ser positivo` })
+    .refine((value) => typeof maxValue !== 'number' || value <= maxValue, {
+      message: maxMessage ?? `${fieldLabel} ultrapassa o valor máximo`,
+    })
+    .optional()
 }
 
 export const investmentFormSchema = z.object({
@@ -36,13 +27,11 @@ export const investmentFormSchema = z.object({
     .string({ error: 'Informe a data de aplicação' })
     .min(1, { message: 'Informe a data de aplicação' })
     .regex(/^\d{2}\/\d{2}\/\d{4}$/, { message: 'Use o formato DD/MM/AAAA' }),
-  months: z.preprocess(
-    toNumberInput,
-    z.number({ error: 'Informe o prazo' })
-      .int({ message: 'Prazo deve ser número inteiro' })
-      .positive({ message: 'Prazo deve ser maior que zero' })
-      .refine((value) => value <= 360, { message: 'Prazo máximo: 360 meses' }),
-  ),
+  months: z
+    .number({ error: 'Informe o prazo' })
+    .int({ message: 'Prazo deve ser número inteiro' })
+    .positive({ message: 'Prazo deve ser maior que zero' })
+    .refine((value) => value <= 360, { message: 'Prazo máximo: 360 meses' }),
   cdi: optionalPositiveNumber('CDI', 200, 'CDI máximo: 200%'),
   pre_rate: optionalPositiveNumber('Taxa', 100, 'Taxa máxima: 100%'),
   selic_meta: optionalPositiveNumber('Selic Meta'),

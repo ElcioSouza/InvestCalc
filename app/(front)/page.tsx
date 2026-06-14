@@ -1,9 +1,32 @@
 'use client'
-
-import { Header, ToastContainer, DecorativeGlowBackdrop } from '@front/components'
+import {useState, useEffect} from 'react'
+import { Header, ToastContainer, DecorativeGlowBackdrop, TabBar } from '@front/components'
+import { useInvestmentForm, useSimulator, useHistory } from '@front/providers'
+import { useSelicRate } from '@front/hooks'
+import type { TabType } from '@front/types'
 
 export default function DashboardPage() {
+    const [tab, setTab] = useState<TabType>('simular')
 
+  const { form, investmentType, rateType, buildPayload } = useInvestmentForm()
+  const simulator = useSimulator()
+  const history   = useHistory()
+  const { fetchHistory } = history
+
+  useSelicRate({ rateType, setValue: form.setValue })
+
+  function handleTabChange(next: TabType) {
+    setTab(next)
+    simulator.clearResult()
+    history.selectItem(null)
+  }
+
+  useEffect(() => {
+    if (tab === 'historico') fetchHistory()
+  }, [tab, fetchHistory])
+
+  const onSubmitSimulate = form.handleSubmit((data) => simulator.simulate(buildPayload(data)))
+  const onSubmitSave     = form.handleSubmit((data) => simulator.save(buildPayload(data)))
   return (
     <>
       <ToastContainer />
@@ -13,6 +36,8 @@ export default function DashboardPage() {
 
         <div className="dashboard-content mx-auto max-w-7xl px-4 py-8 lg:py-6 relative">
           <Header />
+           <TabBar active={tab} onChange={handleTabChange} />
+
         </div>
       </main>
     </>

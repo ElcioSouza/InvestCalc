@@ -1,2 +1,6 @@
 export {ToastProvider,useToast} from './ToastContext'
+export { ServicesProvider,useServices } from './ServicesContext'
+export { InvestmentFormProvider,useInvestmentForm } from './FormContext'
+export { SimulatorProvider,useSimulator } from './SimulatorContext'
+export { HistoryProvider,useHistory } from './HistoryContext'
 export {AppProviders} from './AppProviders'

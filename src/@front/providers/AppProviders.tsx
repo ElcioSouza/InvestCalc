@@ -1,4 +1,10 @@
-import { ToastProvider } from './ToastContext'
+import {
+  ToastProvider,
+  ServicesProvider,
+  InvestmentFormProvider,
+  SimulatorProvider,
+  HistoryProvider,
+} from '@front/providers'
 
 interface AppProvidersProps {
   children: React.ReactNode
@@ -7,7 +13,15 @@ interface AppProvidersProps {
 export function AppProviders({ children }: AppProvidersProps) {
   return (
     <ToastProvider>
-      {children}
+      <ServicesProvider>
+        <InvestmentFormProvider>
+          <SimulatorProvider>
+            <HistoryProvider>
+              {children}
+            </HistoryProvider>
+          </SimulatorProvider>
+        </InvestmentFormProvider>
+      </ServicesProvider>
     </ToastProvider>
   )
 }
