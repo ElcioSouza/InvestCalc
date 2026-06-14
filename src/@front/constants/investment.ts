@@ -42,9 +42,9 @@ export const TAB_LABELS: Record<TabType, string> = {
 export const DEFAULT_FORM_VALUES = {
   investment_type: 'cdb' as const,
   rate_type:       'pos' as const,
-  capital:         10_000,
-  months:          6,
-  cdi:             110,
+  capital:         null,
+  months:          null,
+  cdi:             null,
   selic_meta:      14.25,
 } as const
 
