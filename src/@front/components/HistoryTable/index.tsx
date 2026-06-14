@@ -52,7 +52,7 @@ export function HistoryTable({
         >
           <Wallet size={28} className="text-[#444] mb-3" />
           <p className="text-[#555] text-sm">Nenhum investimento salvo ainda</p>
-          <p className="text-[#3A3F4A] text-xs mt-1">Use a aba &quot;Salvar&quot; para persistir simula\u00E7\u00F5es</p>
+          <p className="text-[var(--text-muted)] text-xs mt-1">Use a aba &quot;Salvar&quot; para persistir simulações</p>
         </div>
       )}
 
