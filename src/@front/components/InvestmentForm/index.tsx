@@ -90,7 +90,7 @@ export function InvestmentForm({
               </FieldWrap>
             </div>
           ) : (
-            <FieldWrap label="Taxa Pr\u00E9-fixada (% a.a.)" icon={<Percent size={13} />} error={errors.pre_rate?.message}>
+            <FieldWrap label="Taxa Pré-fixada (% a.a.)" icon={<Percent size={13} />} error={errors.pre_rate?.message}>
               <input
                 type="number"
                 step="0.01"
