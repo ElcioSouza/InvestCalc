@@ -8,14 +8,14 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://investcalc-chi.vercel.app'
 
 export const metadata: Metadata = {
-  title: 'InvestCalc - Calculadora de Renda Fixa Brasileira',
+  title: 'InvestCalc - Calculadora de Renda Fixa',
   description: 'Simule e compare CDB, LCI e LCA com taxas CDI e SELIC em tempo real.',
   icons: '/favicon.svg',
   openGraph: {
-    title: 'InvestCalc - Calculadora de Renda Fixa Brasileira',
+    title: 'InvestCalc - Calculadora de Renda Fixa',
     description: 'Simule e compare CDB, LCI e LCA com taxas CDI e SELIC em tempo real.',
     images: [
       {
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'InvestCalc - Calculadora de Renda Fixa Brasileira',
+    title: 'InvestCalc - Calculadora de Renda Fixa',
     description: 'Simule e compare CDB, LCI e LCA com taxas CDI e SELIC em tempo real.',
     images: [`${siteUrl}/logo.png`],
   },
