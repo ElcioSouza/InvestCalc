@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     description: 'Simule e compare CDB, LCI e LCA com taxas CDI e SELIC em tempo real.',
     images: [
       {
-        url: `${siteUrl}/api/og`,
+        url: `${siteUrl}/logo.png`,
         width: 1200,
         height: 630,
         alt: 'InvestCalc',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'InvestCalc - Calculadora de Renda Fixa Brasileira',
     description: 'Simule e compare CDB, LCI e LCA com taxas CDI e SELIC em tempo real.',
-    images: [`${siteUrl}/api/og`],
+    images: [`${siteUrl}/logo.png`],
   },
 }
 
