@@ -94,6 +94,8 @@ INTERNAL_API_BASE_URL=https://apiapp.infinityfreeapp.com
 - Validação de formulários com Zod
 - Toast notifications para feedback
 - Design responsivo com dark theme
+- Código modular com padrão **Single Responsibility (SRP)**
+- Mensagens de erro genéricas para segurança (sem expor detalhes internos)
 
 ## Estrutura do Projeto
 
@@ -124,7 +126,13 @@ src/
 │   └── utils/                      # formatação BRL, %, datas
 ├── @server/                        # Código server-side
 │   ├── controllers/                # CalculateController
-│   ├── integrations/               # Proxy API externa + antibot AES
+│   ├── integrations/
+│   │   └── investmentApi/          # Proxy API externa (modular)
+│   │       ├── index.ts            # Ponto de entrada (fetchFromApi)
+│   │       ├── constants.ts        # Constantes e configurações
+│   │       ├── crypto.ts           # Resolução de desafio AES
+│   │       ├── request.ts          # Helpers HTTP (safeFetch, forwardResponse)
+│   │       └── challengeHandler.ts # Lógica de resolução de challenges
 │   └── utils/                      # handleRoute, SystemError
 ├── @global/                        # Código compartilhado
 │   └── utils/                      # DateUtil
