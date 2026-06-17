@@ -32,11 +32,10 @@ export const IR_BRACKETS = [
   { maxDays: Infinity, rate: '15,0%' },
 ] as const
 
-export const TABS: TabType[] = ['simular', 'salvar', 'historico']
+export const TABS: TabType[] = ['simular', 'historico']
 
 export const TAB_LABELS: Record<TabType, string> = {
   simular:   '\u26A1 Simular',
-  salvar:    '\u{1F4BE} Salvar',
   historico: '\u{1F4CB} Hist\u00F3rico',
 }
 

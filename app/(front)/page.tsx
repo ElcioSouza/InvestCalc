@@ -26,7 +26,6 @@ export default function DashboardPage() {
   }, [tab, fetchHistory])
 
   const onSubmitSimulate = form.handleSubmit((data) => simulator.simulate(buildPayload(data)))
-  const onSubmitSave = form.handleSubmit((data) => simulator.save(buildPayload(data)))
   return (
     <>
       <ToastContainer />
@@ -38,16 +37,14 @@ export default function DashboardPage() {
           <Header />
           <TabBar active={tab} onChange={handleTabChange} />
 
-          {(tab === 'simular' || tab === 'salvar') && (
+          {tab === 'simular' && (
             <div className="dashboard-panels">
               <SimulatorView
-                tab={tab}
                 form={form}
                 investmentType={investmentType}
                 rateType={rateType}
                 simulator={simulator}
                 onSubmitSimulate={onSubmitSimulate}
-                onSubmitSave={onSubmitSave}
               />
             </div>
           )}

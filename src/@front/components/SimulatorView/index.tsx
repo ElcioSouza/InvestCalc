@@ -4,26 +4,23 @@ import { InvestmentResult } from '../InvestmentResult'
 import type { SimulatorViewProps } from './type'
 
 export function SimulatorView({
-  tab,
   form,
   investmentType,
   rateType,
   simulator,
   onSubmitSimulate,
-  onSubmitSave,
 }: SimulatorViewProps) {
   const { result, isLoading, clearResult } = simulator
 
   return (
     <div className="dashboard-grid grid grid-cols-1 xl:grid-cols-[460px_1fr] gap-6">
       <InvestmentForm
-        mode={tab}
         investmentType={investmentType}
         rateType={rateType}
         errors={form.formState.errors}
         isLoading={isLoading}
         register={form.register}
-        onSubmit={tab === 'simular' ? onSubmitSimulate : onSubmitSave}
+        onSubmit={onSubmitSimulate}
       />
 
       <div>

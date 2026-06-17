@@ -9,7 +9,6 @@ interface SimulatorContextValue {
   result: InvestmentResult | null
   isLoading: boolean
   simulate: (payload: InvestmentPayload) => Promise<void>
-  save: (payload: InvestmentPayload) => Promise<void>
   clearResult: () => void
 }
 
@@ -21,45 +20,34 @@ export function SimulatorProvider({ children }: { children: ReactNode }) {
   const [result, setResult]     = useState<InvestmentResult | null>(null)
   const [isLoading, setLoading] = useState(false)
 
-  const withLoading = useCallback(
-    async (fn: () => Promise<InvestmentResult>, successMsg: (r: InvestmentResult) => string) => {
+  const simulate = useCallback(
+    (payload: InvestmentPayload): Promise<void> => {
       setLoading(true)
       setResult(null)
-      try {
-        const res = await fn()
-        setResult(res)
-        showToast('success', successMsg(res))
-      } catch (err) {
-        showToast('error', err instanceof Error ? err.message : 'Erro inesperado')
-      } finally {
-        setLoading(false)
-      }
+      return simulatorService
+        .simulate(payload)
+        .then((res) => {
+          setResult(res)
+          if (res.id) {
+            showToast('success', `Investimento #${res.id} salvo com sucesso!`)
+          } else {
+            showToast('success', 'Simula\u00E7\u00E3o calculada com sucesso!')
+          }
+        })
+        .catch((err) => {
+          showToast('error', err instanceof Error ? err.message : 'Erro inesperado')
+        })
+        .finally(() => {
+          setLoading(false)
+        })
     },
-    [showToast]
-  )
-
-  const simulate = useCallback(
-    (payload: InvestmentPayload) =>
-      withLoading(
-        () => simulatorService.simulate(payload),
-        () => 'Simula\u00E7\u00E3o calculada com sucesso!'
-      ),
-    [simulatorService, withLoading]
-  )
-
-  const save = useCallback(
-    (payload: InvestmentPayload) =>
-      withLoading(
-        () => simulatorService.save(payload),
-        (r) => `Investimento #${r.id} salvo com sucesso!`
-      ),
-    [simulatorService, withLoading]
+    [simulatorService, showToast]
   )
 
   const clearResult = useCallback(() => setResult(null), [])
 
   return (
-    <SimulatorContext.Provider value={{ result, isLoading, simulate, save, clearResult }}>
+    <SimulatorContext.Provider value={{ result, isLoading, simulate, clearResult }}>
       {children}
     </SimulatorContext.Provider>
   )

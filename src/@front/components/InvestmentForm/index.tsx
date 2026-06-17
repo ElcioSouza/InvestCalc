@@ -1,6 +1,6 @@
 'use client'
 
-import { RefreshCw, Zap, PlusCircle, DollarSign, Calendar, Clock, Percent, BarChart3, Shield } from 'lucide-react'
+import { RefreshCw, Zap, DollarSign, Calendar, Clock, Percent, BarChart3, Shield } from 'lucide-react'
 import { InvestmentTypeSelector } from '../InvestmentTypeSelector'
 import { RateTypeSelector } from '../RateTypeSelector'
 import { FieldWrap } from '../FieldWrap'
@@ -12,7 +12,6 @@ function getInputBorderClass(hasError: boolean) {
 }
 
 export function InvestmentForm({
-  mode,
   investmentType,
   rateType,
   errors,
@@ -30,7 +29,7 @@ export function InvestmentForm({
         <div className="flex items-center gap-2 mb-6">
           <Zap size={15} className="text-(--gold)" />
           <span className="text-xs font-bold text-[#D4A843] uppercase tracking-widest">
-            {mode === 'simular' ? 'Simulador' : 'Novo Investimento'}
+            Simulador
           </span>
         </div>
 
@@ -108,10 +107,8 @@ export function InvestmentForm({
           >
             {isLoading ? (
               <><RefreshCw size={15} className="animate-spin" /> Calculando...</>
-            ) : mode === 'simular' ? (
-              <><Zap size={15} /> Calcular Simulação</>
             ) : (
-              <><PlusCircle size={15} /> Salvar Investimento</>
+              <><Zap size={15} /> Calcular e Salvar</>
             )}
           </button>
         </form>

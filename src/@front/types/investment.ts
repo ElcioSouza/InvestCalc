@@ -2,7 +2,7 @@ import type { LucideIcon } from 'lucide-react'
 
 export type RateType = 'pre' | 'pos'
 export type InvestmentType = 'cdb' | 'lci' | 'lca'
-export type TabType = 'simular' | 'salvar' | 'historico'
+export type TabType = 'simular' | 'historico'
 export type ToastType = 'success' | 'error' | 'warning' | 'info'
 export interface InvestmentPayload {
   investment_type: InvestmentType

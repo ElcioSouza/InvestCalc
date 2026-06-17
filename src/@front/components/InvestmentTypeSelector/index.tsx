@@ -22,7 +22,7 @@ export function InvestmentTypeSelector({ selected, register }: InvestmentTypeSel
       <label className="block text-[11px] font-semibold text-[#555] mb-2 uppercase tracking-widest">
         Tipo de Investimento
       </label>
-      <div className="grid grid-cols-3 gap-4 items-stretch">
+      <div className="grid grid-cols-3 gap-4c items-stretch">
         {TYPES.map((type) => {
           const Icon = TYPE_ICONS[type]
           const info = TYPE_INFO[type]
