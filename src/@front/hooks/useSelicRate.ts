@@ -9,13 +9,14 @@ export function useSelicRate({ rateType, setValue }: UseSelicRateOptions): void 
     
     let cancelled = false
 
-    const fetchData = async () => {
-      try {
-        const rate = await fetchSelicRate()
-        if (!cancelled) {
-          setValue('selic_meta', rate, { shouldValidate: false })
-        }
-      } catch {}
+    const fetchData = () => {
+      fetchSelicRate()
+        .then((rate) => {
+          if (!cancelled) {
+            setValue('selic_meta', rate, { shouldValidate: false })
+          }
+        })
+        .catch(() => {})
     }
 
     fetchData()

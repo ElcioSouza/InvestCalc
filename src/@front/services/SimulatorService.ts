@@ -4,13 +4,12 @@ import type { InvestmentPayload, InvestmentResult } from '@front/types'
 export class SimulatorService {
   constructor(private readonly repo: InvestmentRepository) {}
 
-  async simulate(payload: InvestmentPayload): Promise<InvestmentResult> {
-    const result = await this.repo.simulate(payload)
-    try {
-      const saved = await this.repo.create(payload)
-      result.id = saved.id
-    } catch {
-    }
-    return result
+  simulate(payload: InvestmentPayload): Promise<InvestmentResult> {
+    return this.repo.simulate(payload).then((result) =>
+      this.repo.create(payload).then(
+        (saved) => { result.id = saved.id; return result },
+        () => result
+      )
+    )
   }
 }

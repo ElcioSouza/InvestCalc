@@ -2,29 +2,27 @@ import type { InvestmentPayload, InvestmentResult, InvestmentInput, InvestmentOu
 import { API_ENDPOINTS } from '@front/constants'
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
-console.log(BASE_URL);
-async function request<T>(url: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(`${BASE_URL}${url}`, {
+
+function request<T>(url: string, options?: RequestInit): Promise<T> {
+  return fetch(`${BASE_URL}${url}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
       ...options?.headers,
     },
-  })
-
-  if (!res.ok) {
-    let msg = `Erro ${res.status}`
-    try {
-      const body = await res.json()
-      msg = body?.error ?? body?.message ?? body?.detail ?? JSON.stringify(body).slice(0, 200)
-    } catch {
-      msg = `Erro ${res.status}: Sem resposta do servidor. Verifique sua conex\u00E3o.`
+  }).then((res) => {
+    if (!res.ok) {
+      return res.json().then(
+        (body) => {
+          const msg = body?.error ?? body?.message ?? body?.detail ?? JSON.stringify(body).slice(0, 200)
+          throw new Error(msg)
+        },
+        () => { throw new Error(`Erro ${res.status}: Sem resposta do servidor. Verifique sua conex\u00E3o.`) }
+      )
     }
-    throw new Error(msg)
-  }
-
-  if (res.status === 204) return undefined as T
-  return res.json() as Promise<T>
+    if (res.status === 204) return undefined as T
+    return res.json() as Promise<T>
+  })
 }
 
 type RawRow = Record<string, unknown>
@@ -80,43 +78,41 @@ function extractList(data: unknown): RawRow[] {
 }
 
 export class InvestmentRepository {
-  async list(): Promise<InvestmentResult[]> {
-    const data = await request<unknown>(API_ENDPOINTS.calculate)
-    return extractList(data).map(mapToResult)
+  list(): Promise<InvestmentResult[]> {
+    return request<unknown>(API_ENDPOINTS.calculate)
+      .then((data) => extractList(data).map(mapToResult))
   }
 
-  async simulate(payload: InvestmentPayload): Promise<InvestmentResult> {
+  simulate(payload: InvestmentPayload): Promise<InvestmentResult> {
     const params = new URLSearchParams()
     for (const [key, value] of Object.entries(payload)) {
       if (value != null) params.append(key, String(value))
     }
     const url = `${API_ENDPOINTS.calculate}?${params.toString()}`
-    const data = await request<unknown>(url)
-    return mapToResult(data as RawRow)
+    return request<unknown>(url)
+      .then((data) => mapToResult(data as RawRow))
   }
 
-  async getById(id: number): Promise<InvestmentResult> {
-    const data = await request<unknown>(API_ENDPOINTS.calculateById(id))
-    return mapToResult(data as RawRow)
+  getById(id: number): Promise<InvestmentResult> {
+    return request<unknown>(API_ENDPOINTS.calculateById(id))
+      .then((data) => mapToResult(data as RawRow))
   }
 
-  async create(payload: InvestmentPayload): Promise<InvestmentResult> {
-    const data = await request<unknown>(API_ENDPOINTS.calculate, {
+  create(payload: InvestmentPayload): Promise<InvestmentResult> {
+    return request<unknown>(API_ENDPOINTS.calculate, {
       method: 'POST',
       body: JSON.stringify(payload),
-    })
-    return mapToResult(data as RawRow)
+    }).then((data) => mapToResult(data as RawRow))
   }
 
-  async update(id: number, payload: InvestmentPayload): Promise<InvestmentResult> {
-    const data = await request<unknown>(API_ENDPOINTS.calculateById(id), {
+  update(id: number, payload: InvestmentPayload): Promise<InvestmentResult> {
+    return request<unknown>(API_ENDPOINTS.calculateById(id), {
       method: 'PUT',
       body: JSON.stringify(payload),
-    })
-    return mapToResult(data as RawRow)
+    }).then((data) => mapToResult(data as RawRow))
   }
 
-  async remove(id: number): Promise<void> {
-    await request(API_ENDPOINTS.calculateById(id), { method: 'DELETE' })
+  remove(id: number): Promise<void> {
+    return request(API_ENDPOINTS.calculateById(id), { method: 'DELETE' })
   }
 }
