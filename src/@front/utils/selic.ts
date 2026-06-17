@@ -6,15 +6,11 @@ interface BcbRecord {
   valor: string
 }
 
-export function fetchSelicRate(): Promise<number> {
-  return fetch(BCB_SELIC_SERIES_URL)
-    .then((res) => {
-      if (!res.ok) throw new Error(`BCB API respondeu com status ${res.status}`)
-      return res.json()
-    })
-    .then((json: BcbRecord[]) => {
-      const dailyRate = parseFloat(json[0]?.valor)
-      if (isNaN(dailyRate)) throw new Error('Resposta inv\u00E1lida da API do BCB')
-      return +((Math.pow(1 + dailyRate / 100, 252) - 1) * 100).toFixed(2)
-    })
+export async function fetchSelicRate(): Promise<number> {
+  const res = await fetch(BCB_SELIC_SERIES_URL)
+  if (!res.ok) throw new Error(`BCB API respondeu com status ${res.status}`)
+  const json: BcbRecord[] = await res.json()
+  const dailyRate = parseFloat(json[0]?.valor)
+  if (isNaN(dailyRate)) throw new Error('Resposta inv\u00E1lida da API do BCB')
+  return +((Math.pow(1 + dailyRate / 100, 252) - 1) * 100).toFixed(2)
 }

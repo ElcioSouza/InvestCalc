@@ -6,10 +6,9 @@ import type { InvestmentHistoryProps } from './type'
 export function InvestmentHistory({ history }: InvestmentHistoryProps) {
   const { items, isLoading, deletingId, selectedItem, fetchHistory, removeItem, selectItem } = history
 
-  function handleDelete(id: number) {
-    removeItem(id).then((deleted) => {
-      if (deleted && selectedItem?.id === id) selectItem(null)
-    })
+  async function handleDelete(id: number) {
+    const deleted = await removeItem(id)
+    if (deleted && selectedItem?.id === id) selectItem(null)
   }
 
   return (

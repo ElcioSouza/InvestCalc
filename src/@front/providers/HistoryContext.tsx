@@ -26,37 +26,33 @@ export function HistoryProvider({ children }: { children: ReactNode }) {
   const [deletingId, setDeletingId]   = useState<number | null>(null)
   const [selectedItem, setSelectedItem] = useState<InvestmentResult | null>(null)
 
-  const fetchHistory = useCallback(() => {
+  const fetchHistory = useCallback(async () => {
     setLoading(true)
-    historyService.list()
-      .then((data) => {
-        setItems(Array.isArray(data) ? data : [])
-      })
-      .catch(() => {
-        setItems([])
-        showToast('error', 'Erro ao carregar hist\u00F3rico')
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+    try {
+      const data = await historyService.list()
+      setItems(Array.isArray(data) ? data : [])
+    } catch {
+      setItems([])
+      showToast('error', 'Erro ao carregar hist\u00F3rico')
+    } finally {
+      setLoading(false)
+    }
   }, [historyService, showToast])
 
   const removeItem = useCallback(
-    (id: number): Promise<boolean> => {
+    async (id: number): Promise<boolean> => {
       setDeletingId(id)
-      return historyService.remove(id)
-        .then(() => {
-          setItems((prev) => prev.filter((i) => i.id !== id))
-          showToast('success', `Investimento #${id} removido.`)
-          return true
-        })
-        .catch((err) => {
-          showToast('error', err instanceof Error ? err.message : 'Erro ao deletar')
-          return false
-        })
-        .finally(() => {
-          setDeletingId(null)
-        })
+      try {
+        await historyService.remove(id)
+        setItems((prev) => prev.filter((i) => i.id !== id))
+        showToast('success', `Investimento #${id} removido.`)
+        return true
+      } catch (err) {
+        showToast('error', err instanceof Error ? err.message : 'Erro ao deletar')
+        return false
+      } finally {
+        setDeletingId(null)
+      }
     },
     [historyService, showToast]
   )

@@ -21,25 +21,22 @@ export function SimulatorProvider({ children }: { children: ReactNode }) {
   const [isLoading, setLoading] = useState(false)
 
   const simulate = useCallback(
-    (payload: InvestmentPayload): Promise<void> => {
+    async (payload: InvestmentPayload): Promise<void> => {
       setLoading(true)
       setResult(null)
-      return simulatorService
-        .simulate(payload)
-        .then((res) => {
-          setResult(res)
-          if (res.id) {
-            showToast('success', `Investimento #${res.id} salvo com sucesso!`)
-          } else {
-            showToast('success', 'Simula\u00E7\u00E3o calculada com sucesso!')
-          }
-        })
-        .catch((err) => {
-          showToast('error', err instanceof Error ? err.message : 'Erro inesperado')
-        })
-        .finally(() => {
-          setLoading(false)
-        })
+      try {
+        const res = await simulatorService.simulate(payload)
+        setResult(res)
+        if (res.id) {
+          showToast('success', `Investimento #${res.id} salvo com sucesso!`)
+        } else {
+          showToast('success', 'Simula\u00E7\u00E3o calculada com sucesso!')
+        }
+      } catch (err) {
+        showToast('error', err instanceof Error ? err.message : 'Erro inesperado')
+      } finally {
+        setLoading(false)
+      }
     },
     [simulatorService, showToast]
   )
