@@ -108,7 +108,7 @@ export function InvestmentForm({
             {isLoading ? (
               <><RefreshCw size={15} className="animate-spin" /> Calculando...</>
             ) : (
-              <><Zap size={15} /> Calcular e Salvar</>
+              <><Zap size={15} /> Calcular Simulação</>
             )}
           </button>
         </form>
