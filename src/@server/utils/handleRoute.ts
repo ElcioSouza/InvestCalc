@@ -10,12 +10,12 @@ export function handleRoute(
     } catch (err: unknown) {
       if (err instanceof SystemError) {
         return NextResponse.json(
-          { error: err.message },
+          { error: 'Erro ao processar sua requisição. Tente novamente mais tarde.' },
           { status: err.status }
         )
       }
       return NextResponse.json(
-        { error: 'Erro interno do servidor' },
+        { error: 'Erro ao processar sua requisição. Tente novamente mais tarde.' },
         { status: 500 }
       )
     }
