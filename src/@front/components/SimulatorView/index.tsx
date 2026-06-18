@@ -22,7 +22,9 @@ export function SimulatorView({
             <Pencil size={13} className="text-[#4299E1]" />
             <span className="text-xs font-semibold text-[#4299E1]">Editando investimento</span>
             <button
+              type="button"
               onClick={onCancelEdit}
+              aria-label="Cancelar edição"
               className="ml-auto p-1 rounded-lg hover:bg-[rgba(66,153,225,0.1)] text-[#4299E1] transition-colors"
             >
               <X size={12} />
