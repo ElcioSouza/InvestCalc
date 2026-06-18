@@ -35,8 +35,8 @@ export const IR_BRACKETS = [
 export const TABS: TabType[] = ['simular', 'historico']
 
 export const TAB_LABELS: Record<TabType, string> = {
-  simular:   '\u26A1 Simular',
-  historico: '\u{1F4CB} Hist\u00F3rico',
+  simular:   'Simular',
+  historico: 'Histórico',
 }
 
 export const DEFAULT_FORM_VALUES = {

@@ -1,6 +1,6 @@
 'use client'
 
-import { RefreshCw, Zap, DollarSign, Calendar, Clock, Percent, BarChart3, Shield } from 'lucide-react'
+import { RefreshCw, TrendingUp, Calculator, DollarSign, Calendar, Clock, Percent, BarChart3, Shield } from 'lucide-react'
 import { InvestmentTypeSelector } from '../InvestmentTypeSelector'
 import { RateTypeSelector } from '../RateTypeSelector'
 import { FieldWrap } from '../FieldWrap'
@@ -27,7 +27,7 @@ export function InvestmentForm({
         className="dashboard-card-tight rounded-2xl p-6 shadow-[0_0_40px_rgba(212,168,67,0.06)] bg-(--bg-card) border-(--border)"
       >
         <div className="flex items-center gap-2 mb-6">
-          <Zap size={15} className="text-(--gold)" />
+          <TrendingUp size={15} className="text-(--gold)" />
           <span className="text-xs font-bold text-[#D4A843] uppercase tracking-widest">
             Simulador
           </span>
@@ -108,7 +108,7 @@ export function InvestmentForm({
             {isLoading ? (
               <><RefreshCw size={15} className="animate-spin" /> Calculando...</>
             ) : (
-              <><Zap size={15} /> Calcular Simulação</>
+               <><Calculator size={15} /> Calcular Simulação</>
             )}
           </button>
         </form>
