@@ -9,4 +9,6 @@ export interface SimulatorViewProps {
   rateType: RateType
   simulator: ReturnType<typeof useSimulator>
   onSubmitSimulate: () => void
+  isEditing?: boolean
+  onCancelEdit?: () => void
 }

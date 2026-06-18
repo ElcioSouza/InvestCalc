@@ -1,6 +1,6 @@
 'use client'
 
-import { RefreshCw, Trash2, Eye, Wallet, Star } from 'lucide-react'
+import { RefreshCw, Trash2, Eye, Wallet, Star, Pencil } from 'lucide-react'
 import { INVESTMENT_TYPE_CONFIG } from '@front/constants'
 import { formatBRL, formatPercent, formatDate, calcProfitPercent, toUpperLabel } from '@front/utils'
 import type { HistoryTableProps } from './type'
@@ -13,6 +13,7 @@ export function HistoryTable({
   deletingId,
   selectedId,
   onSelect,
+  onEdit,
   onDelete,
   onRefresh,
 }: HistoryTableProps) {
@@ -130,6 +131,13 @@ export function HistoryTable({
                             aria-label="Ver detalhes do investimento"
                           >
                             <Eye size={12} />
+                          </button>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); onEdit(item) }}
+                            className="p-1.5 rounded-lg transition-colors hover:bg-[rgba(66,153,225,0.1)] text-[#555] hover:text-[#4299E1]"
+                            aria-label="Editar investimento"
+                          >
+                            <Pencil size={12} />
                           </button>
                           <button
                             onClick={(e) => { e.stopPropagation(); if (item.id) onDelete(item.id) }}

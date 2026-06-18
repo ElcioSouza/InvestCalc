@@ -3,7 +3,7 @@ import { EmptyDetail } from '../EmptyDetail'
 import { HistoryTable } from '../HistoryTable'
 import type { InvestmentHistoryProps } from './type'
 
-export function InvestmentHistory({ history }: InvestmentHistoryProps) {
+export function InvestmentHistory({ history, onEdit }: InvestmentHistoryProps) {
   const { items, isLoading, deletingId, selectedItem, fetchHistory, removeItem, selectItem } = history
 
   async function handleDelete(id: number) {
@@ -19,6 +19,7 @@ export function InvestmentHistory({ history }: InvestmentHistoryProps) {
         deletingId={deletingId}
         selectedId={selectedItem?.id}
         onSelect={selectItem}
+        onEdit={onEdit}
         onDelete={handleDelete}
         onRefresh={fetchHistory}
       />

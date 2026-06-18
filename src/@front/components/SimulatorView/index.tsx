@@ -1,4 +1,4 @@
-import { BarChart3 } from 'lucide-react'
+import { BarChart3, Pencil, X } from 'lucide-react'
 import { InvestmentForm } from '../InvestmentForm'
 import { InvestmentResult } from '../InvestmentResult'
 import type { SimulatorViewProps } from './type'
@@ -9,19 +9,35 @@ export function SimulatorView({
   rateType,
   simulator,
   onSubmitSimulate,
+  isEditing,
+  onCancelEdit,
 }: SimulatorViewProps) {
   const { result, isLoading, clearResult } = simulator
 
   return (
     <div className="dashboard-grid grid grid-cols-1 xl:grid-cols-[460px_1fr] gap-6">
-      <InvestmentForm
-        investmentType={investmentType}
-        rateType={rateType}
-        errors={form.formState.errors}
-        isLoading={isLoading}
-        register={form.register}
-        onSubmit={onSubmitSimulate}
-      />
+      <div>
+        {isEditing && (
+          <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-xl bg-[rgba(66,153,225,0.08)] border border-[rgba(66,153,225,0.15)]">
+            <Pencil size={13} className="text-[#4299E1]" />
+            <span className="text-xs font-semibold text-[#4299E1]">Editando investimento</span>
+            <button
+              onClick={onCancelEdit}
+              className="ml-auto p-1 rounded-lg hover:bg-[rgba(66,153,225,0.1)] text-[#4299E1] transition-colors"
+            >
+              <X size={12} />
+            </button>
+          </div>
+        )}
+        <InvestmentForm
+          investmentType={investmentType}
+          rateType={rateType}
+          errors={form.formState.errors}
+          isLoading={isLoading}
+          register={form.register}
+          onSubmit={onSubmitSimulate}
+        />
+      </div>
 
       <div>
         {!result && !isLoading && <SimulatorPlaceholder />}

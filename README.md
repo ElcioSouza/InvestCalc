@@ -74,8 +74,7 @@ INTERNAL_API_BASE_URL=https://apiapp.infinityfreeapp.com
 ### Abas
 
 1. **Simular** — Preencha os parâmetros e obtenha o cálculo instantâneo
-2. **Salvar** — Persiste a simulação no backend
-3. **Histórico** — Visualize investimentos salvos, detalhes e exclusão
+2. **Histórico** — Visualize investimentos salvos, com opções de editar, visualizar detalhes e excluir
 
 ### Resultados Exibidos
 
@@ -96,6 +95,7 @@ INTERNAL_API_BASE_URL=https://apiapp.infinityfreeapp.com
 - Design responsivo com dark theme
 - Código modular com padrão **Single Responsibility (SRP)**
 - Mensagens de erro genéricas para segurança (sem expor detalhes internos)
+- **Edição com recálculo** — ao editar um investimento salvo, os valores são recalculados automaticamente
 
 ## Estrutura do Projeto
 
@@ -160,5 +160,5 @@ Rota catch-all que delega para o controller server-side. Endpoints consumidos pe
 | `GET` | `/api/calculate?{params}` | Simular investimento |
 | `GET` | `/api/calculate/{id}` | Buscar investimento por ID |
 | `POST` | `/api/calculate` | Salvar novo investimento |
-| `PUT` | `/api/calculate/{id}` | Atualizar investimento |
+| `PUT` | `/api/calculate/{id}` | Atualizar investimento (edit com recálculo) |
 | `DELETE` | `/api/calculate/{id}` | Excluir investimento |

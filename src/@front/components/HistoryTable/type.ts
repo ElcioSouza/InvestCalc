@@ -6,6 +6,7 @@ export interface HistoryTableProps {
   deletingId: number | null
   selectedId?: number
   onSelect: (item: InvestmentResult) => void
+  onEdit: (item: InvestmentResult) => void
   onDelete: (id: number) => void
   onRefresh: () => void
 }

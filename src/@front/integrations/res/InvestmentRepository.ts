@@ -13,13 +13,14 @@ async function request<T>(url: string, options?: RequestInit): Promise<T> {
   })
 
   if (!res.ok) {
+    let msg = `Erro ${res.status}`
     try {
       const body = await res.json()
-      const msg = body?.error ?? body?.message ?? body?.detail ?? JSON.stringify(body).slice(0, 200)
-      throw new Error(msg)
+      msg = body?.error ?? body?.message ?? body?.detail ?? JSON.stringify(body).slice(0, 200)
     } catch {
-      throw new Error(`Erro ${res.status}: Sem resposta do servidor. Verifique sua conex\u00E3o.`)
+      // resposta não é JSON
     }
+    throw new Error(msg)
   }
 
   if (res.status === 204) return undefined as T
@@ -33,9 +34,11 @@ function mapToInput(row: RawRow): InvestmentInput {
     investment_type: (row.investment_type as InvestmentInput['investment_type']) ?? 'cdb',
     rate_type:       (row.rate_type       as InvestmentInput['rate_type'])       ?? 'pos',
     initial_capital: Number(row.initial_capital ?? row.capital ?? 0),
-    cdi_percentage:  row.cdi_percentage  != null ? Number(row.cdi_percentage)  : null,
+    cdi_percentage:  row.cdi_percentage  != null ? Number(row.cdi_percentage)
+                    : row.cdi            != null ? Number(row.cdi)            : null,
     selic_meta:      row.selic_meta      != null ? Number(row.selic_meta)       : null,
-    pre_fixed_rate:  row.pre_fixed_rate  != null ? Number(row.pre_fixed_rate)   : null,
+    pre_fixed_rate:  row.pre_fixed_rate  != null ? Number(row.pre_fixed_rate)
+                    : row.pre_rate       != null ? Number(row.pre_rate)        : null,
     cdi_over:        row.cdi_over        != null ? Number(row.cdi_over)         : null,
     application_date: String(row.application_date ?? ''),
     redemption_date:  String(row.redemption_date  ?? ''),
@@ -107,10 +110,21 @@ export class InvestmentRepository {
     return mapToResult(data as RawRow)
   }
 
-  async update(id: number, payload: InvestmentPayload): Promise<InvestmentResult> {
+  async update(id: number, payload: InvestmentPayload, original?: InvestmentInput): Promise<InvestmentResult> {
+    const rateType = payload.rate_type
+    const body: Record<string, string> = {
+      investment_type:  payload.investment_type,
+      rate_type:        rateType,
+      capital:          String(payload.capital),
+      application_date: payload.application_date,
+      months:           String(payload.months),
+      cdi:              String(payload.cdi ?? original?.cdi_percentage ?? 1),
+      pre_rate:         String(payload.pre_rate ?? original?.pre_fixed_rate ?? 1),
+      selic_meta:       String(payload.selic_meta ?? original?.selic_meta ?? 1),
+    }
     const data = await request<unknown>(API_ENDPOINTS.calculateById(id), {
       method: 'PUT',
-      body: JSON.stringify(payload),
+      body: JSON.stringify(body),
     })
     return mapToResult(data as RawRow)
   }

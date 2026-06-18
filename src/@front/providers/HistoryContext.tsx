@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useCallback, useContext, useState, type ReactNode } from 'react'
-import type { InvestmentResult } from '@front/types'
+import type { InvestmentPayload, InvestmentResult } from '@front/types'
 import { useServices } from './ServicesContext'
 import { useToast } from './ToastContext'
 
@@ -10,9 +10,13 @@ interface HistoryContextValue {
   isLoading: boolean
   deletingId: number | null
   selectedItem: InvestmentResult | null
+  editingItem: InvestmentResult | null
   fetchHistory: () => void
   removeItem: (id: number) => Promise<boolean>
   selectItem: (item: InvestmentResult | null) => void
+  editItem: (item: InvestmentResult) => void
+  updateItem: (id: number, payload: InvestmentPayload) => Promise<boolean>
+  cancelEdit: () => void
 }
 
 const HistoryContext = createContext<HistoryContextValue | null>(null)
@@ -25,6 +29,7 @@ export function HistoryProvider({ children }: { children: ReactNode }) {
   const [isLoading, setLoading]       = useState(false)
   const [deletingId, setDeletingId]   = useState<number | null>(null)
   const [selectedItem, setSelectedItem] = useState<InvestmentResult | null>(null)
+  const [editingItem, setEditingItem] = useState<InvestmentResult | null>(null)
 
   const fetchHistory = useCallback(async () => {
     setLoading(true)
@@ -57,13 +62,39 @@ export function HistoryProvider({ children }: { children: ReactNode }) {
     [historyService, showToast]
   )
 
+  const updateItem = useCallback(
+    async (id: number, payload: InvestmentPayload): Promise<boolean> => {
+      try {
+        const original = editingItem?.input
+        const updated = await historyService.update(id, payload, original)
+        setItems((prev) => prev.map((i) => (i.id === id ? updated : i)))
+        setSelectedItem(updated)
+        setEditingItem(null)
+        showToast('success', `Investimento #${id} atualizado com sucesso!`)
+        return true
+      } catch (err) {
+        showToast('error', err instanceof Error ? err.message : 'Erro ao atualizar')
+        return false
+      }
+    },
+    [historyService, showToast]
+  )
+
   const selectItem = useCallback((item: InvestmentResult | null) => {
     setSelectedItem(item)
   }, [])
 
+  const editItem = useCallback((item: InvestmentResult) => {
+    setEditingItem(item)
+  }, [])
+
+  const cancelEdit = useCallback(() => {
+    setEditingItem(null)
+  }, [])
+
   return (
     <HistoryContext.Provider
-      value={{ items, isLoading, deletingId, selectedItem, fetchHistory, removeItem, selectItem }}
+      value={{ items, isLoading, deletingId, selectedItem, editingItem, fetchHistory, removeItem, selectItem, editItem, updateItem, cancelEdit }}
     >
       {children}
     </HistoryContext.Provider>
