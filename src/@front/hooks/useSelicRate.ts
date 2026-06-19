@@ -19,7 +19,7 @@ export function useSelicRate({ rateType, setValue }: UseSelicRateOptions): void 
         if (list.length > 0) {
           const first = list[0]
           const raw = first?.input ?? first
-          const val = raw?.selic_meta_default
+          const val = raw?.selic_meta
           const num = typeof val === 'number' ? val : typeof val === 'string' ? parseFloat(val) : null
           if (num != null && !isNaN(num) && num > 0) {
             setValue('selic_meta_default', num, { shouldValidate: false })
