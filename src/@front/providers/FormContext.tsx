@@ -36,6 +36,7 @@ export function InvestmentFormProvider({ children }: { children: ReactNode }) {
     } else {
       form.setValue('cdi', undefined, { shouldValidate: false })
       form.setValue('selic_meta', undefined, { shouldValidate: false })
+      form.setValue('selic_meta_default', undefined, { shouldValidate: false })
     }
   }, [rateType])
 
@@ -48,7 +49,7 @@ export function InvestmentFormProvider({ children }: { children: ReactNode }) {
       months:           data.months!,
     }
     return data.rate_type === 'pos'
-      ? { ...base, cdi: data.cdi || undefined, selic_meta: data.selic_meta || undefined }
+      ? { ...base, cdi: data.cdi ?? undefined, selic_meta: data.selic_meta_default ?? undefined }
       : { ...base, pre_rate: data.pre_rate || undefined }
   }
 

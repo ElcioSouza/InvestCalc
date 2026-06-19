@@ -46,7 +46,8 @@ export const DEFAULT_FORM_VALUES = {
   months:          undefined,
   cdi:             undefined,
   pre_rate:        undefined,
-  selic_meta:      14.25,
+  selic_meta:       undefined,
+  selic_meta_default: undefined,
 }
 
 export const API_ENDPOINTS = {

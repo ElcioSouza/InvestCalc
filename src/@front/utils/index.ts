@@ -11,5 +11,3 @@ export {
   clampPercent,
   getIRAliquota
 } from './format'
-
-export { fetchSelicRate } from './selic'

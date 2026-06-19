@@ -29,11 +29,13 @@ export default function DashboardPage() {
     if (input.rate_type === 'pos') {
       form.setValue('cdi', input.cdi_percentage ?? undefined, { shouldValidate: false })
       form.setValue('selic_meta', input.selic_meta ?? undefined, { shouldValidate: false })
+      form.setValue('selic_meta_default', undefined, { shouldValidate: false })
       form.setValue('pre_rate', undefined, { shouldValidate: false })
     } else {
       form.setValue('pre_rate', input.pre_fixed_rate ?? undefined, { shouldValidate: false })
       form.setValue('cdi', undefined, { shouldValidate: false })
       form.setValue('selic_meta', undefined, { shouldValidate: false })
+      form.setValue('selic_meta_default', undefined, { shouldValidate: false })
     }
   }, [editItem, form])
 

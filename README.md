@@ -1,6 +1,6 @@
 # InvestCalc
 
-Simule e compare investimentos de renda fixa — CDB, LCI e LCA — com cálculos instantâneos de IR, IOF e rentabilidade líquida. Consulta a SELIC em tempo real via API do Banco Central.
+Simule e compare investimentos de renda fixa — CDB, LCI e LCA — com cálculos instantâneos de IR, IOF e rentabilidade líquida. Consulta a SELIC em tempo real via backend.
 
 ## Tech Stack
 
@@ -89,7 +89,7 @@ INTERNAL_API_BASE_URL=https://apiapp.infinityfreeapp.com
 
 ### Extras
 
-- Consulta da **SELIC em tempo real** via API do Banco Central do Brasil
+- Consulta da **SELIC em tempo real** via backend
 - Validação de formulários com Zod
 - Toast notifications para feedback
 - Design responsivo com dark theme

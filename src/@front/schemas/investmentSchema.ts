@@ -36,6 +36,7 @@ export const investmentFormSchema = z
     cdi: optionalPositiveNumber('CDI', 200, 'CDI máximo: 200%'),
     pre_rate: optionalPositiveNumber('Taxa', 100, 'Taxa máxima: 100%'),
     selic_meta: optionalPositiveNumber('Selic Meta'),
+    selic_meta_default: optionalPositiveNumber('Selic Meta'),
   })
   .superRefine((data, ctx) => {
     if (data.rate_type === 'pre' && (data.pre_rate == null || data.pre_rate <= 0)) {

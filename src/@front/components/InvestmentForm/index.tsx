@@ -41,7 +41,8 @@ export function InvestmentForm({
             <input
               type="number"
               step="0.01"
-              placeholder="10000.00"
+              autoComplete="off"
+              placeholder="10000"
               {...register('capital', { valueAsNumber: true })}
                 className={`input-gold w-full rounded-xl border bg-[rgba(255,255,255,0.025)] px-3 py-2.5 pl-9 pr-3 text-sm text-white placeholder-[#333] ${getInputBorderClass(Boolean(errors.capital))}`}
             />
@@ -73,18 +74,19 @@ export function InvestmentForm({
                 <input
                   type="number"
                   step="0.01"
-                  placeholder="110"
+                  autoComplete="off"
+                  placeholder="4"
                   {...register('cdi', { valueAsNumber: true })}
                   className={`input-gold w-full rounded-xl border bg-[rgba(255,255,255,0.025)] px-3 py-2.5 pl-9 pr-3 text-sm text-white placeholder-[#333] ${getInputBorderClass(Boolean(errors.cdi))}`}
                 />
               </FieldWrap>
-              <FieldWrap label="Selic Meta (%)" icon={<BarChart3 size={13} />} error={errors.selic_meta?.message}>
+              <FieldWrap label="Selic Meta (%)" icon={<BarChart3 size={13} />} error={errors.selic_meta_default?.message}>
                 <input
                   type="number"
                   step="0.01"
-                  placeholder="14.25"
-                  {...register('selic_meta', { valueAsNumber: true })}
-                  className={`input-gold w-full rounded-xl border bg-[rgba(255,255,255,0.025)] px-3 py-2.5 pl-9 pr-3 text-sm text-white placeholder-[#333] ${getInputBorderClass(Boolean(errors.selic_meta))}`}
+                  placeholder="14,25"
+                  {...register('selic_meta_default', { valueAsNumber: true })}
+                  className={`input-gold w-full rounded-xl border bg-[rgba(255,255,255,0.025)] px-3 py-2.5 pl-9 pr-3 text-sm text-white placeholder-[#333] ${getInputBorderClass(Boolean(errors.selic_meta_default))}`}
                 />
               </FieldWrap>
             </div>
