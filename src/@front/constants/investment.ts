@@ -25,13 +25,6 @@ export const INVESTMENT_TYPE_CONFIG: Record<InvestmentType, InvestmentTypeConfig
   },
 }
 
-export const IR_BRACKETS = [
-  { maxDays: 180,      rate: '22,5%' },
-  { maxDays: 360,      rate: '20,0%' },
-  { maxDays: 720,      rate: '17,5%' },
-  { maxDays: Infinity, rate: '15,0%' },
-] as const
-
 export const TABS: TabType[] = ['simular', 'historico']
 
 export const TAB_LABELS: Record<TabType, string> = {
@@ -47,7 +40,6 @@ export const DEFAULT_FORM_VALUES = {
   cdi:             undefined,
   pre_rate:        undefined,
   selic_meta:       undefined,
-  selic_meta_default: undefined,
 }
 
 export const API_ENDPOINTS = {

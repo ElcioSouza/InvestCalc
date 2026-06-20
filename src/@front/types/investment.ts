@@ -41,6 +41,8 @@ export interface InvestmentOutput {
   days: number
   business_days: number
   is_isento: boolean
+  ir_aliquot: number
+  profit_percentage: number
 }
 
 export interface InvestmentResult {

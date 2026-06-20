@@ -50,6 +50,7 @@ Ou crie manualmente o arquivo `.env` na raiz do projeto:
 
 ```env
 INTERNAL_API_BASE_URL=https://apiapp.infinityfreeapp.com
+NEXT_PUBLIC_SITE_URL=https://investcalc-chi.vercel.app
 ```
 
 > O Next.js lê `.env` nativamente. Não é preciso instalar nenhuma biblioteca adicional.
@@ -57,6 +58,7 @@ INTERNAL_API_BASE_URL=https://apiapp.infinityfreeapp.com
 | Variável | Escopo | Descrição |
 |----------|--------|-----------|
 | `INTERNAL_API_BASE_URL` | Servidor | URL do backend externo da API: `https://apiapp.infinityfreeapp.com` |
+| `NEXT_PUBLIC_SITE_URL` | Cliente | URL do site em produção |
 
 ## Funcionalidades
 
@@ -78,10 +80,14 @@ INTERNAL_API_BASE_URL=https://apiapp.infinityfreeapp.com
 
 ### Resultados Exibidos
 
+Todos os valores vêm prontos do backend PHP — o frontend apenas exibe:
+
 - Montante líquido final
 - Lucro bruto e líquido
 - Lucro mensal / diário
 - IOF e Imposto de Renda (alíquota regressiva: 22,5% → 15%)
+- Percentual de rendimento (`profit_percentage`)
+- Alíquota do IR (`ir_aliquot`)
 - Selo de isenção para LCI/LCA
 - Gráfico de barras (Capital × Lucro × Impostos × Líquido)
 - Datas de aplicação e resgate
@@ -89,7 +95,7 @@ INTERNAL_API_BASE_URL=https://apiapp.infinityfreeapp.com
 
 ### Extras
 
-- Consulta da **SELIC em tempo real** via backend
+- Consulta da **SELIC em tempo real** via API do Banco Central do Brasil (`/api/selic`)
 - Validação de formulários com Zod
 - Toast notifications para feedback
 - Design responsivo com dark theme
@@ -110,13 +116,16 @@ app/
 │   ├── page.tsx                    # Dashboard principal
 │   └── error.tsx                   # Error boundary do route group
 └── (server)/
-    └── api/calculate/[[...slug]]/
-        └── route.ts                # API catch-all
+    └── api/
+        ├── calculate/[[...slug]]/
+        │   └── route.ts            # API catch-all (simular, CRUD)
+        └── selic/
+            └── route.ts            # Consulta SELIC (Banco Central)
 
 src/
 ├── @front/                         # Código do frontend
 │   ├── components/                 # 15 componentes UI
-│   ├── constants/                  # Configs, defaults, alíquotas IR
+│   ├── constants/                  # Configs, defaults
 │   ├── hooks/                      # useSelicRate
 │   ├── integrations/               # InvestmentRepository (HTTP client)
 │   ├── providers/                  # 5 React Context providers
@@ -150,6 +159,16 @@ src/
 
 ## API
 
+### `GET /api/selic`
+
+Consulta a taxa SELIC em tempo real via API do Banco Central do Brasil.
+
+| Método | URL | Descrição |
+|--------|-----|-----------|
+| `GET` | `/api/selic` | Retorna `{ "selic_meta": 14.25, "date": "05/08/2026", "source": "BCB/SGS Séries Temporais" }` |
+
+O frontend consome essa rota automaticamente ao selecionar pós-fixado, preenchendo o campo "Selic Meta (%)" no formulário.
+
 ### `GET/POST/PUT/DELETE /api/calculate/[[...slug]]`
 
 Rota catch-all que delega para o controller server-side. Endpoints consumidos pelo frontend:
@@ -162,3 +181,15 @@ Rota catch-all que delega para o controller server-side. Endpoints consumidos pe
 | `POST` | `/api/calculate` | Salvar novo investimento |
 | `PUT` | `/api/calculate/{id}` | Atualizar investimento (edit com recálculo) |
 | `DELETE` | `/api/calculate/{id}` | Excluir investimento |
+
+### Fluxo de Dados
+
+```
+Frontend (React)
+  → useSelicRate hook → fetch('/api/selic') → Backend PHP (Banco Central)
+  → InvestmentRepository → fetch('/api/calculate') → Backend PHP (cálculos)
+
+Backend PHP (apiapp.infinityfreeapp.com)
+  → /api/selic → Banco Central do Brasil (SGS Séries Temporais)
+  → /api/calculate → Cálculos financeiros (IR, IOF, rendimento)
+```

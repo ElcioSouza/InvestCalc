@@ -80,13 +80,13 @@ export function InvestmentForm({
                   className={`input-gold w-full rounded-xl border bg-[rgba(255,255,255,0.025)] px-3 py-2.5 pl-9 pr-3 text-sm text-white placeholder-[#333] ${getInputBorderClass(Boolean(errors.cdi))}`}
                 />
               </FieldWrap>
-              <FieldWrap label="Selic Meta (%)" icon={<BarChart3 size={13} />} error={errors.selic_meta_default?.message}>
+              <FieldWrap label="Selic Meta (%)" icon={<BarChart3 size={13} />} error={errors.selic_meta?.message}>
                 <input
                   type="number"
                   step="0.01"
                   placeholder="14,25"
-                  {...register('selic_meta_default', { valueAsNumber: true })}
-                  className={`input-gold w-full rounded-xl border bg-[rgba(255,255,255,0.025)] px-3 py-2.5 pl-9 pr-3 text-sm text-white placeholder-[#333] ${getInputBorderClass(Boolean(errors.selic_meta_default))}`}
+                  {...register('selic_meta', { valueAsNumber: true })}
+                  className={`input-gold w-full rounded-xl border bg-[rgba(255,255,255,0.025)] px-3 py-2.5 pl-9 pr-3 text-sm text-white placeholder-[#333] ${getInputBorderClass(Boolean(errors.selic_meta))}`}
                 />
               </FieldWrap>
             </div>

@@ -3,7 +3,6 @@ export {
   TAB_LABELS,
   TABS,
   INVESTMENT_TYPE_CONFIG,
-  IR_BRACKETS,
   DEFAULT_FORM_VALUES,
   API_ENDPOINTS,
 } from './investment'

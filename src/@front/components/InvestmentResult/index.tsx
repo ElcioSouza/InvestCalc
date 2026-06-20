@@ -5,7 +5,7 @@ import {
 import { StatCard } from '../StatCard'
 import { BarRow } from '../BarRow'
 import { INVESTMENT_TYPE_CONFIG } from '@front/constants'
-import { formatBRL, formatPercent, formatDate, getIRAliquota, getRateTypeLabel, calcProfitPercent, clampPercent } from '@front/utils'
+import { formatBRL, formatPercent, formatDate, getRateTypeLabel, clampPercent } from '@front/utils'
 import type { InvestmentResultProps } from './type'
 
 const GLOW_CLASSES = {
@@ -29,7 +29,7 @@ function getWidthClass(percent: number) {
 export function InvestmentResult({ data, onClose, compact = false }: InvestmentResultProps) {
   const { input, result } = data
   const profit = result.profit_liquid
-  const profitPct = calcProfitPercent(input.initial_capital, profit)
+  const profitPct = result.profit_percentage
   const info = INVESTMENT_TYPE_CONFIG[input.investment_type] ?? INVESTMENT_TYPE_CONFIG.cdb
 
   const stats = [
@@ -122,7 +122,7 @@ export function InvestmentResult({ data, onClose, compact = false }: InvestmentR
               <span className="text-xs font-bold text-[#FC8181]">{formatBRL(result.iof_value)}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-[11px] text-[#555]">IR ({getIRAliquota(result.days)})</span>
+              <span className="text-[11px] text-[#555]">IR ({result.ir_aliquot}%)</span>
               <span className="text-xs font-bold text-[#FC8181]">{formatBRL(result.ir_tax_amount)}</span>
             </div>
           </div>

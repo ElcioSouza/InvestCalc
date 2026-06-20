@@ -60,6 +60,8 @@ function mapToOutput(row: RawRow): InvestmentOutput {
     days:                   Number(row.days                   ?? 0),
     business_days:          Number(row.business_days          ?? 0),
     is_isento:             Boolean(row.is_isento              ?? false),
+    ir_aliquot:            Number(row.ir_aliquot              ?? 0),
+    profit_percentage:     Number(row.profit_percentage       ?? 0),
   }
 }
 

@@ -2,7 +2,7 @@
 
 import { RefreshCw, Trash2, Eye, Wallet, Star, Pencil } from 'lucide-react'
 import { INVESTMENT_TYPE_CONFIG } from '@front/constants'
-import { formatBRL, formatPercent, formatDate, calcProfitPercent, toUpperLabel } from '@front/utils'
+import { formatBRL, formatPercent, formatDate, toUpperLabel } from '@front/utils'
 import type { HistoryTableProps } from './type'
 
 const COLUMNS = ['ID', 'Tipo', 'Capital', 'Lucro L\u00EDq.', 'Rendimento', 'Prazo', 'Resg.', 'A\u00E7\u00F5es']
@@ -72,7 +72,7 @@ export function HistoryTable({
               </thead>
               <tbody>
                 {items.map((item, idx) => {
-                  const pct = calcProfitPercent(item.input.initial_capital, item.result.profit_liquid)
+                  const pct = item.result.profit_percentage
                   const info = INVESTMENT_TYPE_CONFIG[item.input.investment_type]
                   const isSelected = selectedId === item.id
 
