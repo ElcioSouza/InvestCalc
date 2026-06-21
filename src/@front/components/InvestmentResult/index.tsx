@@ -49,7 +49,7 @@ export function InvestmentResult({ data, onClose, compact = false }: InvestmentR
   const glowClass = GLOW_CLASSES[info.color as keyof typeof GLOW_CLASSES] ?? GLOW_CLASSES['#D4A843']
 
   return (
-    <div className="space-y-3 animate-reveal max-w-full xl:max-w-200 w-full overflow-x-auto">
+    <div className="space-y-3 animate-reveal max-w-full xl:max-w-200  w-full overflow-x-auto">
       <div className="dashboard-card-tight relative rounded-2xl border-[1px_solid_rgba(13,158,110,0.3)] bg-(--bg-card) p-5 shadow-[0_0_40px_rgba(13,158,110,0.06)]">
         <div className={`absolute inset-0 opacity-[0.06] ${glowClass}`} />
 
