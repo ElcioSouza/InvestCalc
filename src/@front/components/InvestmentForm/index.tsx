@@ -53,7 +53,6 @@ export function InvestmentForm({
               <input
                 type="text"
                 placeholder="DD/MM/AAAA"
-                maxLength={10}
                 {...register('application_date')}
                 className={`input-gold w-full rounded-xl border bg-[rgba(255,255,255,0.025)] px-3 py-2.5 pl-9 pr-3 text-sm text-white ${getInputBorderClass(Boolean(errors.application_date))}`}
               />

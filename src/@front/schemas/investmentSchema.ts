@@ -23,7 +23,7 @@ export const investmentFormSchema = z
   .object({
     investment_type: z.enum(['cdb', 'lci', 'lca']),
     rate_type: z.enum(['pre', 'pos']),
-    capital: requiredPositiveNumber('Capital', 100_000_000, 'Valor máximo: R$ 100.000.000'),
+    capital: requiredPositiveNumber('Capital'),
     application_date: z
       .string({ error: 'Informe a data de aplicação' })
       .min(1, { message: 'Informe a data de aplicação' })
@@ -31,10 +31,9 @@ export const investmentFormSchema = z
     months: z
       .number({ error: 'Informe o prazo' })
       .int({ message: 'Prazo deve ser número inteiro' })
-      .positive({ message: 'Prazo deve ser maior que zero' })
-      .refine((value) => value <= 360, { message: 'Prazo máximo: 360 meses' }),
-    cdi: optionalPositiveNumber('CDI', 200, 'CDI máximo: 200%'),
-    pre_rate: optionalPositiveNumber('Taxa', 100, 'Taxa máxima: 100%'),
+      .positive({ message: 'Prazo deve ser maior que zero' }),
+    cdi: optionalPositiveNumber('CDI'),
+    pre_rate: optionalPositiveNumber('Taxa'),
     selic_meta: optionalPositiveNumber('Selic Meta'),
   })
   .superRefine((data, ctx) => {
