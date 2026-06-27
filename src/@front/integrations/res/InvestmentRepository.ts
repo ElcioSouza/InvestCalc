@@ -1,4 +1,4 @@
-import type { InvestmentPayload, InvestmentResult, InvestmentInput, InvestmentOutput } from '@front/types'
+import type { InvestmentPayload, InvestmentResult, InvestmentInput, InvestmentOutput, PaginatedResponse, PaginationParams } from '@front/types'
 import { API_ENDPOINTS } from '@front/constants'
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
@@ -84,9 +84,30 @@ function extractList(data: unknown): RawRow[] {
 }
 
 export class InvestmentRepository {
-  async list(): Promise<InvestmentResult[]> {
-    const data = await request<unknown>(API_ENDPOINTS.calculate)
-    return extractList(data).map(mapToResult)
+  async list(params?: PaginationParams): Promise<PaginatedResponse<InvestmentResult>> {
+    const page = params?.page ?? 1
+    const perPage = params?.per_page ?? 10
+    const query = new URLSearchParams()
+    query.append('page', String(page))
+    query.append('per_page', String(perPage + 1))
+    const url = `${API_ENDPOINTS.calculate}?${query.toString()}`
+    const data = await request<unknown>(url)
+
+    const rows = extractList(data).map(mapToResult)
+    const hasMore = rows.length > perPage
+    const items = hasMore ? rows.slice(0, perPage) : rows
+
+    if (items.length === 0 && page > 1) {
+      return this.list({ page: page - 1, per_page: perPage })
+    }
+
+    return {
+      data: items,
+      current_page: page,
+      last_page: hasMore ? page + 1 : page,
+      per_page: perPage,
+      total: 0,
+    }
   }
 
   async simulate(payload: InvestmentPayload): Promise<InvestmentResult> {

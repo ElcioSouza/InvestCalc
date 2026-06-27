@@ -9,4 +9,6 @@ export type {
   InvestmentResult,
   Toast,
   InvestmentTypeConfig,
+  PaginatedResponse,
+  PaginationParams,
 } from './investment'

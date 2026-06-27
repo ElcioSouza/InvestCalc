@@ -5,8 +5,12 @@ export interface HistoryTableProps {
   isLoading: boolean
   deletingId: number | null
   selectedId?: number
+  currentPage: number
+  lastPage: number
+  total: number
   onSelect: (item: InvestmentResult) => void
   onEdit: (item: InvestmentResult) => void
   onDelete: (id: number) => void
   onRefresh: () => void
+  onPageChange: (page: number) => void
 }

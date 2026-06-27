@@ -1,11 +1,11 @@
 import type { InvestmentRepository } from '@front/integrations/res'
-import type { InvestmentPayload, InvestmentResult, InvestmentInput } from '@front/types'
+import type { InvestmentPayload, InvestmentResult, InvestmentInput, PaginatedResponse, PaginationParams } from '@front/types'
 
 export class HistoryService {
   constructor(private readonly repo: InvestmentRepository) {}
 
-  list(): Promise<InvestmentResult[]> {
-    return this.repo.list()
+  list(params?: PaginationParams): Promise<PaginatedResponse<InvestmentResult>> {
+    return this.repo.list(params)
   }
 
   update(id: number, payload: InvestmentPayload, original?: InvestmentInput): Promise<InvestmentResult> {

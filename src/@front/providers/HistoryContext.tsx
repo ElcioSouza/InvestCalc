@@ -11,7 +11,10 @@ interface HistoryContextValue {
   deletingId: number | null
   selectedItem: InvestmentResult | null
   editingItem: InvestmentResult | null
-  fetchHistory: () => void
+  currentPage: number
+  lastPage: number
+  total: number
+  fetchHistory: (page?: number) => void
   removeItem: (id: number) => Promise<boolean>
   selectItem: (item: InvestmentResult | null) => void
   editItem: (item: InvestmentResult) => void
@@ -30,12 +33,18 @@ export function HistoryProvider({ children }: { children: ReactNode }) {
   const [deletingId, setDeletingId]   = useState<number | null>(null)
   const [selectedItem, setSelectedItem] = useState<InvestmentResult | null>(null)
   const [editingItem, setEditingItem] = useState<InvestmentResult | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [lastPage, setLastPage]       = useState(1)
+  const [total, setTotal]             = useState(0)
 
-  const fetchHistory = useCallback(async () => {
+  const fetchHistory = useCallback(async (page = 1) => {
     setLoading(true)
     try {
-      const data = await historyService.list()
-      setItems(Array.isArray(data) ? data : [])
+      const res = await historyService.list({ page, per_page: 10 })
+      setItems(Array.isArray(res.data) ? res.data : [])
+      setCurrentPage(res.current_page)
+      setLastPage(res.last_page)
+      setTotal(res.total)
     } catch {
       setItems([])
       showToast('error', 'Erro ao carregar hist\u00F3rico')
@@ -94,7 +103,7 @@ export function HistoryProvider({ children }: { children: ReactNode }) {
 
   return (
     <HistoryContext.Provider
-      value={{ items, isLoading, deletingId, selectedItem, editingItem, fetchHistory, removeItem, selectItem, editItem, updateItem, cancelEdit }}
+      value={{ items, isLoading, deletingId, selectedItem, editingItem, currentPage, lastPage, total, fetchHistory, removeItem, selectItem, editItem, updateItem, cancelEdit }}
     >
       {children}
     </HistoryContext.Provider>

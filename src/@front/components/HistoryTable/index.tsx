@@ -1,22 +1,39 @@
 'use client'
 
-import { RefreshCw, Trash2, Eye, Wallet, Star, Pencil } from 'lucide-react'
+import { RefreshCw, Trash2, Eye, Wallet, Star, Pencil, ChevronLeft, ChevronRight } from 'lucide-react'
 import { INVESTMENT_TYPE_CONFIG } from '@front/constants'
 import { formatBRL, formatPercent, formatDate, toUpperLabel } from '@front/utils'
 import type { HistoryTableProps } from './type'
 
 const COLUMNS = ['ID', 'Tipo', 'Capital', 'Lucro L\u00EDq.', 'Rendimento', 'Prazo', 'Resg.', 'A\u00E7\u00F5es']
 
+function getPageNumbers(current: number, last: number): (number | '...')[] {
+  if (last <= 7) return Array.from({ length: last }, (_, i) => i + 1)
+  const pages: (number | '...')[] = [1]
+  if (current > 3) pages.push('...')
+  for (let i = Math.max(2, current - 1); i <= Math.min(last - 1, current + 1); i++) {
+    pages.push(i)
+  }
+  if (current < last - 2) pages.push('...')
+  pages.push(last)
+  return pages
+}
+
 export function HistoryTable({
   items,
   isLoading,
   deletingId,
   selectedId,
+  currentPage,
+  lastPage,
+  total,
   onSelect,
   onEdit,
   onDelete,
   onRefresh,
+  onPageChange,
 }: HistoryTableProps) {
+  const pages = getPageNumbers(currentPage, lastPage)
   return (
     <div className="animate-fade-in-up">
       <div className="flex items-center justify-between mb-5">
@@ -157,6 +174,49 @@ export function HistoryTable({
               </tbody>
             </table>
           </div>
+
+          {lastPage > 1 && (
+            <div className="flex items-center justify-between px-4 py-3 border-t border-[rgba(212,168,67,0.1)]">
+              <span className="text-xs text-[#555]">
+                Página {currentPage} de {lastPage}
+              </span>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => onPageChange(currentPage - 1)}
+                  disabled={currentPage <= 1}
+                  className="p-1.5 rounded-lg transition-colors hover:bg-[rgba(212,168,67,0.1)] text-[#555] hover:text-[#D4A843] disabled:opacity-30 disabled:cursor-not-allowed"
+                  aria-label="Página anterior"
+                >
+                  <ChevronLeft size={14} />
+                </button>
+                {pages.map((p, i) =>
+                  p === '...' ? (
+                    <span key={`dots-${i}`} className="text-xs text-[#555] px-1">...</span>
+                  ) : (
+                    <button
+                      key={p}
+                      onClick={() => onPageChange(p)}
+                      className={`min-w-[28px] h-7 rounded-lg text-xs font-bold transition-colors ${
+                        p === currentPage
+                          ? 'bg-[rgba(212,168,67,0.15)] text-[#D4A843]'
+                          : 'text-[#555] hover:bg-[rgba(212,168,67,0.08)] hover:text-[#D4A843]'
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  )
+                )}
+                <button
+                  onClick={() => onPageChange(currentPage + 1)}
+                  disabled={currentPage >= lastPage}
+                  className="p-1.5 rounded-lg transition-colors hover:bg-[rgba(212,168,67,0.1)] text-[#555] hover:text-[#D4A843] disabled:opacity-30 disabled:cursor-not-allowed"
+                  aria-label="Próxima página"
+                >
+                  <ChevronRight size={14} />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

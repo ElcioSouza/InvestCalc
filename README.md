@@ -76,7 +76,7 @@ NEXT_PUBLIC_SITE_URL=https://investcalc-chi.vercel.app
 ### Abas
 
 1. **Simular** — Preencha os parâmetros e obtenha o cálculo instantâneo
-2. **Histórico** — Visualize investimentos salvos, com opções de editar, visualizar detalhes e excluir
+2. **Histórico** — Visualize investimentos salvos com paginação (10 por página), com opções de editar, visualizar detalhes e excluir
 
 ### Resultados Exibidos
 
@@ -102,6 +102,7 @@ Todos os valores vêm prontos do backend PHP — o frontend apenas exibe:
 - Código modular com padrão **Single Responsibility (SRP)**
 - Mensagens de erro genéricas para segurança (sem expor detalhes internos)
 - **Edição com recálculo** — ao editar um investimento salvo, os valores são recalculados automaticamente
+- **Paginação no histórico** — 10 itens por página com navegação entre páginas via API
 
 ## Estrutura do Projeto
 
@@ -176,6 +177,7 @@ Rota catch-all que delega para o controller server-side. Endpoints consumidos pe
 | Método | URL | Descrição |
 |--------|-----|-----------|
 | `GET` | `/api/calculate` | Listar investimentos salvos |
+| `GET` | `/api/calculate?page={n}&per_page={n}` | Listar com paginação (padrão: 10 por página) |
 | `GET` | `/api/calculate?{params}` | Simular investimento |
 | `GET` | `/api/calculate/{id}` | Buscar investimento por ID |
 | `POST` | `/api/calculate` | Salvar novo investimento |
@@ -187,9 +189,11 @@ Rota catch-all que delega para o controller server-side. Endpoints consumidos pe
 ```
 Frontend (React)
   → useSelicRate hook → fetch('/api/selic') → Backend PHP (Banco Central)
-  → InvestmentRepository → fetch('/api/calculate') → Backend PHP (cálculos)
+  → HistoryContext → fetchHistory(page) → InvestmentRepository
+    → fetch('/api/calculate?page={n}&per_page=11') → Backend PHP (cálculos)
+    ← { data: [...], current_page, last_page, per_page, total }
 
 Backend PHP (apiapp.infinityfreeapp.com)
   → /api/selic → Banco Central do Brasil (SGS Séries Temporais)
-  → /api/calculate → Cálculos financeiros (IR, IOF, rendimento)
+  → /api/calculate?page={n}&per_page={n} → Cálculos financeiros (IR, IOF, rendimento)
 ```
