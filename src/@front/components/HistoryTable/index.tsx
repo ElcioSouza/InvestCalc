@@ -175,7 +175,7 @@ export function HistoryTable({
             </table>
           </div>
 
-          {lastPage > 1 && (
+          {items.length > 0 && (
             <div className="flex items-center justify-between px-4 py-3 border-t border-[rgba(212,168,67,0.1)]">
               <span className="text-xs text-[#555]">
                 Página {currentPage} de {lastPage}
@@ -196,9 +196,10 @@ export function HistoryTable({
                     <button
                       key={p}
                       onClick={() => onPageChange(p)}
+                      disabled={p === currentPage}
                       className={`min-w-[28px] h-7 rounded-lg text-xs font-bold transition-colors ${
                         p === currentPage
-                          ? 'bg-[rgba(212,168,67,0.15)] text-[#D4A843]'
+                          ? 'bg-[rgba(212,168,67,0.15)] text-[#D4A843] cursor-default'
                           : 'text-[#555] hover:bg-[rgba(212,168,67,0.08)] hover:text-[#D4A843]'
                       }`}
                     >

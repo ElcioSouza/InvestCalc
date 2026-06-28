@@ -1,9 +1,11 @@
 'use client'
 
-import { createContext, useCallback, useContext, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
 import type { InvestmentPayload, InvestmentResult } from '@front/types'
 import { useServices } from './ServicesContext'
 import { useToast } from './ToastContext'
+
+const PAGE_SIZE = 10
 
 interface HistoryContextValue {
   items: InvestmentResult[]
@@ -14,7 +16,8 @@ interface HistoryContextValue {
   currentPage: number
   lastPage: number
   total: number
-  fetchHistory: (page?: number) => void
+  fetchHistory: () => void
+  goToPage: (page: number) => void
   removeItem: (id: number) => Promise<boolean>
   selectItem: (item: InvestmentResult | null) => void
   editItem: (item: InvestmentResult) => void
@@ -28,37 +31,45 @@ export function HistoryProvider({ children }: { children: ReactNode }) {
   const { historyService } = useServices()
   const { showToast }      = useToast()
 
-  const [items, setItems]             = useState<InvestmentResult[]>([])
+  const [allItems, setAllItems]       = useState<InvestmentResult[]>([])
   const [isLoading, setLoading]       = useState(false)
   const [deletingId, setDeletingId]   = useState<number | null>(null)
   const [selectedItem, setSelectedItem] = useState<InvestmentResult | null>(null)
   const [editingItem, setEditingItem] = useState<InvestmentResult | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const [lastPage, setLastPage]       = useState(1)
-  const [total, setTotal]             = useState(0)
 
-  const fetchHistory = useCallback(async (page = 1) => {
+  const lastPage = useMemo(() => Math.max(1, Math.ceil(allItems.length / PAGE_SIZE)), [allItems])
+  const total = allItems.length
+  const items = useMemo(() => {
+    const start = (currentPage - 1) * PAGE_SIZE
+    return allItems.slice(start, start + PAGE_SIZE)
+  }, [allItems, currentPage])
+
+  const fetchHistory = useCallback(async () => {
     setLoading(true)
     try {
-      const res = await historyService.list({ page, per_page: 10 })
-      setItems(Array.isArray(res.data) ? res.data : [])
-      setCurrentPage(res.current_page)
-      setLastPage(res.last_page)
-      setTotal(res.total)
+      const res = await historyService.list({ page: 1, per_page: 9999 })
+      setAllItems(Array.isArray(res.data) ? res.data : [])
+      setCurrentPage(1)
     } catch {
-      setItems([])
+      setAllItems([])
       showToast('error', 'Erro ao carregar hist\u00F3rico')
     } finally {
       setLoading(false)
     }
   }, [historyService, showToast])
 
+  const goToPage = useCallback((page: number) => {
+    const clamped = Math.max(1, Math.min(page, lastPage))
+    setCurrentPage(clamped)
+  }, [lastPage])
+
   const removeItem = useCallback(
     async (id: number): Promise<boolean> => {
       setDeletingId(id)
       try {
         await historyService.remove(id)
-        setItems((prev) => prev.filter((i) => i.id !== id))
+        setAllItems((prev) => prev.filter((i) => i.id !== id))
         showToast('success', `Investimento #${id} removido.`)
         return true
       } catch (err) {
@@ -76,7 +87,7 @@ export function HistoryProvider({ children }: { children: ReactNode }) {
       try {
         const original = editingItem?.input
         const updated = await historyService.update(id, payload, original)
-        setItems((prev) => prev.map((i) => (i.id === id ? updated : i)))
+        setAllItems((prev) => prev.map((i) => (i.id === id ? updated : i)))
         setSelectedItem(updated)
         setEditingItem(null)
         showToast('success', `Investimento #${id} atualizado com sucesso!`)
@@ -103,7 +114,7 @@ export function HistoryProvider({ children }: { children: ReactNode }) {
 
   return (
     <HistoryContext.Provider
-      value={{ items, isLoading, deletingId, selectedItem, editingItem, currentPage, lastPage, total, fetchHistory, removeItem, selectItem, editItem, updateItem, cancelEdit }}
+      value={{ items, isLoading, deletingId, selectedItem, editingItem, currentPage, lastPage, total, fetchHistory, goToPage, removeItem, selectItem, editItem, updateItem, cancelEdit }}
     >
       {children}
     </HistoryContext.Provider>
