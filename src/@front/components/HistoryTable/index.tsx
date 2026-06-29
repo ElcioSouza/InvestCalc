@@ -5,7 +5,7 @@ import { INVESTMENT_TYPE_CONFIG } from '@front/constants'
 import { formatBRL, formatPercent, formatDate, toUpperLabel } from '@front/utils'
 import type { HistoryTableProps } from './type'
 
-const COLUMNS = ['ID', 'Tipo', 'Capital', 'Lucro L\u00EDq.', 'Rendimento', 'Prazo', 'Resg.', 'A\u00E7\u00F5es']
+const COLUMNS = ['ID', 'Tipo','CDI', 'Capital', 'Lucro L\u00EDq.', 'Rendimento', 'Prazo', 'Resg.', 'A\u00E7\u00F5es']
 
 function getPageNumbers(current: number, last: number): (number | '...')[] {
   if (last <= 7) return Array.from({ length: last }, (_, i) => i + 1)
@@ -79,7 +79,7 @@ export function HistoryTable({
           className="card-surface rounded-2xl overflow-hidden border border-(--border)"
         >
           <div className="overflow-x-auto">
-            <table className="w-full inv-table">
+            <table className="w-full max-w-80 inv-table">
               <thead>
                 <tr className="border-b border-[rgba(212,168,67,0.1)]">
                   {COLUMNS.map((col) => (
@@ -120,6 +120,11 @@ export function HistoryTable({
                             </span>
                           )}
                         </div>
+                      </td>
+                     <td className="px-4 py-3">
+                        <span className="text-xs font-mono font-bold text-[#D4A843]">
+                          {item.input.pre_fixed_rate === 1 ||  item.input.pre_fixed_rate === 0 ?  item.input.cdi_percentage : item.input.pre_fixed_rate}%
+                        </span>
                       </td>
                       <td className="px-4 py-3 text-xs font-semibold text-white">
                         {formatBRL(item.input.initial_capital)}
