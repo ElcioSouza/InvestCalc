@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import type { InvestmentPayload, InvestmentResult } from '@front/types'
 import { useServices } from './ServicesContext'
 import { useToast } from './ToastContext'
@@ -39,6 +39,11 @@ export function HistoryProvider({ children }: { children: ReactNode }) {
   const [currentPage, setCurrentPage] = useState(1)
 
   const lastPage = useMemo(() => Math.max(1, Math.ceil(allItems.length / PAGE_SIZE)), [allItems])
+
+  useEffect(() => {
+    setCurrentPage((cp) => Math.min(cp, lastPage))
+  }, [lastPage])
+
   const total = allItems.length
   const items = useMemo(() => {
     const start = (currentPage - 1) * PAGE_SIZE
