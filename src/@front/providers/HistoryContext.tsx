@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
 import type { InvestmentPayload, InvestmentResult } from '@front/types'
 import { useServices } from './ServicesContext'
 import { useToast } from './ToastContext'
@@ -52,9 +52,10 @@ export function HistoryProvider({ children }: { children: ReactNode }) {
 
   const lastPage = useMemo(() => Math.max(1, Math.ceil(allItems.length / PAGE_SIZE)), [allItems])
 
-  useEffect(() => {
-    setCurrentPage((cp) => Math.min(cp, lastPage))
-  }, [lastPage])
+  const effectiveCurrentPage = useMemo(
+    () => Math.min(currentPage, lastPage),
+    [currentPage, lastPage]
+  )
 
   const total = allItems.length
 
@@ -98,9 +99,9 @@ export function HistoryProvider({ children }: { children: ReactNode }) {
   }, [allItems, sortConfig])
 
   const items = useMemo(() => {
-    const start = (currentPage - 1) * PAGE_SIZE
+    const start = (effectiveCurrentPage - 1) * PAGE_SIZE
     return sortedItems.slice(start, start + PAGE_SIZE)
-  }, [sortedItems, currentPage])
+  }, [sortedItems, effectiveCurrentPage])
 
   const fetchHistory = useCallback(async () => {
     setLoading(true)
@@ -179,7 +180,7 @@ export function HistoryProvider({ children }: { children: ReactNode }) {
 
   return (
     <HistoryContext.Provider
-      value={{ items, isLoading, deletingId, selectedItem, editingItem, currentPage, lastPage, total, sortField: sortConfig.field, sortDirection: sortConfig.direction, fetchHistory, goToPage, removeItem, selectItem, editItem, updateItem, cancelEdit, sortBy }}
+      value={{ items, isLoading, deletingId, selectedItem, editingItem, currentPage: effectiveCurrentPage, lastPage, total, sortField: sortConfig.field, sortDirection: sortConfig.direction, fetchHistory, goToPage, removeItem, selectItem, editItem, updateItem, cancelEdit, sortBy }}
     >
       {children}
     </HistoryContext.Provider>
