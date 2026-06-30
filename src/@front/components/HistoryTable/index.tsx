@@ -1,11 +1,22 @@
 'use client'
 
-import { RefreshCw, Trash2, Eye, Wallet, Star, Pencil, ChevronLeft, ChevronRight } from 'lucide-react'
+import { RefreshCw, Trash2, Eye, Wallet, Star, Pencil, ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react'
 import { INVESTMENT_TYPE_CONFIG } from '@front/constants'
 import { formatBRL, formatPercent, formatDate, toUpperLabel } from '@front/utils'
+import type { SortField } from '@front/providers/HistoryContext'
 import type { HistoryTableProps } from './type'
 
-const COLUMNS = ['ID', 'Tipo','CDI', 'Capital', 'Lucro L\u00EDq.', 'Rendimento', 'Prazo', 'Resg.', 'A\u00E7\u00F5es']
+const COLUMNS: { label: string; field: SortField | null }[] = [
+  { label: 'ID', field: 'id' },
+  { label: 'Tipo', field: 'investment_type' },
+  { label: 'CDI', field: 'cdi' },
+  { label: 'Capital', field: 'capital' },
+  { label: 'Lucro L\u00EDq.', field: 'profit_liquid' },
+  { label: 'Rendimento', field: 'profit_percentage' },
+  { label: 'Prazo', field: 'months' },
+  { label: 'Resg.', field: 'redemption_date' },
+  { label: 'A\u00E7\u00F5es', field: null },
+]
 
 function getPageNumbers(current: number, last: number): (number | '...')[] {
   if (last <= 7) return Array.from({ length: last }, (_, i) => i + 1)
@@ -27,11 +38,14 @@ export function HistoryTable({
   currentPage,
   lastPage,
   total,
+  sortField,
+  sortDirection,
   onSelect,
   onEdit,
   onDelete,
   onRefresh,
   onPageChange,
+  onSort,
 }: HistoryTableProps) {
   const pages = getPageNumbers(currentPage, lastPage)
   return (
@@ -79,11 +93,24 @@ export function HistoryTable({
           className="card-surface rounded-2xl overflow-hidden border border-(--border)"
         >
           <div className="overflow-x-auto">
-            <table className="w-full max-w-80 inv-table">
+            <table className="w-full max-w-full inv-table">
               <thead>
                 <tr className="border-b border-[rgba(212,168,67,0.1)]">
                   {COLUMNS.map((col) => (
-                    <th key={col} className="text-left px-4 py-3">{col}</th>
+                    <th
+                      key={col.label}
+                      className={`text-left px-4 py-3 whitespace-nowrap ${col.field ? 'cursor-pointer select-none hover:bg-[rgba(212,168,67,0.05)] transition-colors' : ''}`}
+                      onClick={col.field ? () => onSort(col.field!) : undefined}
+                    >
+                      <div className="flex items-center gap-1">
+                        <span>{col.label}</span>
+                        {col.field && sortField === col.field && (
+                          sortDirection === 'asc'
+                            ? <ChevronUp size={12} className="text-[#D4A843]" />
+                            : <ChevronDown size={12} className="text-[#D4A843]" />
+                        )}
+                      </div>
+                    </th>
                   ))}
                 </tr>
               </thead>
@@ -101,12 +128,12 @@ export function HistoryTable({
                         isSelected ? 'bg-[rgba(212,168,67,0.05)]' : ''
                       }`}
                     >
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <span className="text-xs font-mono font-bold text-[#D4A843]">
                           #{item.id}
                         </span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <div className="flex items-center gap-1.5">
                           <span className="text-sm">{info?.icon && <info.icon size={14} strokeWidth={1.5} />}</span>
                           <span className="text-xs font-bold text-white">
@@ -121,31 +148,31 @@ export function HistoryTable({
                           )}
                         </div>
                       </td>
-                     <td className="px-4 py-3">
+                     <td className="px-4 py-3 whitespace-nowrap">
                         <span className="text-xs font-mono font-bold text-[#D4A843]">
                           {item.input.pre_fixed_rate === 1 ||  item.input.pre_fixed_rate === 0 ?  item.input.cdi_percentage : item.input.pre_fixed_rate}%
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-xs font-semibold text-white">
+                      <td className="px-4 py-3 text-xs font-semibold text-white whitespace-nowrap">
                         {formatBRL(item.input.initial_capital)}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <span className="text-xs font-bold text-[#10C98A]">
                           {formatBRL(item.result.profit_liquid)}
                         </span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <span className="text-xs font-semibold text-[#D4A843]">+{formatPercent(pct)}</span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <span className="text-xs text-[#8A94A6]">{item.input.months}m</span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <span className="text-xs font-mono text-[#555]">
                           {formatDate(item.input.redemption_date)}
                         </span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <div className="flex items-center gap-1.5">
                           <button
                             onClick={(e) => { e.stopPropagation(); onSelect(item) }}

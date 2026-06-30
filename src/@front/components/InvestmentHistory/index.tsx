@@ -4,7 +4,7 @@ import { HistoryTable } from '../HistoryTable'
 import type { InvestmentHistoryProps } from './type'
 
 export function InvestmentHistory({ history, onEdit }: InvestmentHistoryProps) {
-  const { items, isLoading, deletingId, selectedItem, currentPage, lastPage, total, fetchHistory, goToPage, removeItem, selectItem } = history
+  const { items, isLoading, deletingId, selectedItem, currentPage, lastPage, total, sortField, sortDirection, fetchHistory, goToPage, removeItem, selectItem, sortBy } = history
 
   async function handleDelete(id: number) {
     const deleted = await removeItem(id)
@@ -21,11 +21,14 @@ export function InvestmentHistory({ history, onEdit }: InvestmentHistoryProps) {
         currentPage={currentPage}
         lastPage={lastPage}
         total={total}
+        sortField={sortField}
+        sortDirection={sortDirection}
         onSelect={selectItem}
         onEdit={onEdit}
         onDelete={handleDelete}
         onRefresh={fetchHistory}
         onPageChange={goToPage}
+        onSort={sortBy}
       />
 
       {selectedItem ? (
