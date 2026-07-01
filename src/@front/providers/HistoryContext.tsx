@@ -7,7 +7,7 @@ import { useToast } from './ToastContext'
 
 const PAGE_SIZE = 10
 
-export type SortField = 'id' | 'investment_type' | 'cdi' | 'capital' | 'profit_liquid' | 'profit_percentage' | 'months' | 'redemption_date'
+export type SortField = 'id' | 'investment_type' | 'cdi' | 'capital' | 'profit_liquid' | 'profit_percentage' | 'months' | 'redemption_date' | 'application_date'
 export type SortDirection = 'asc' | 'desc'
 
 interface SortConfig {

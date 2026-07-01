@@ -68,7 +68,7 @@ export default function DashboardPage() {
       <main className="dashboard-shell min-h-screen w-full bg-grid relative overflow-x-hidden overflow-y-visible">
         <DecorativeGlowBackdrop />
 
-        <div className="dashboard-content mx-auto max-w-7xl px-4 py-8 lg:py-6 relative">
+        <div className="dashboard-content mx-auto max-w-330 px-4 py-8 lg:py-6 relative">
           <Header />
           <TabBar active={tab} onChange={handleTabChange} />
 

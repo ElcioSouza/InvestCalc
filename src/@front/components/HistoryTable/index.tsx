@@ -14,6 +14,7 @@ const COLUMNS: { label: string; field: SortField | null }[] = [
   { label: 'Lucro L\u00EDq.', field: 'profit_liquid' },
   { label: 'Rendimento', field: 'profit_percentage' },
   { label: 'Prazo', field: 'months' },
+  { label: 'Aplica.', field: 'application_date' },
   { label: 'Resg.', field: 'redemption_date' },
   { label: 'A\u00E7\u00F5es', field: null },
 ]
@@ -59,7 +60,7 @@ export function HistoryTable({
           <span
             className="text-xs px-2 py-0.5 rounded-full font-bold bg-[rgba(212,168,67,0.1)] text-[#D4A843]"
           >
-            {items.length}
+            {total}
           </span>
         </div>
         <button
@@ -84,7 +85,7 @@ export function HistoryTable({
         >
           <Wallet size={28} className="text-[#444] mb-3" />
           <p className="text-[#555] text-sm">Nenhum investimento salvo ainda</p>
-          <p className="text-[var(--text-muted)] text-xs mt-1">Use a aba &quot;Salvar&quot; para persistir simulações</p>
+          <p className="text-(--text-muted) text-xs mt-1">Use a aba &quot;Salvar&quot; para persistir simulações</p>
         </div>
       )}
 
@@ -99,7 +100,7 @@ export function HistoryTable({
                   {COLUMNS.map((col) => (
                     <th
                       key={col.label}
-                      className={`text-left px-4 py-3 whitespace-nowrap ${col.field ? 'cursor-pointer select-none hover:bg-[rgba(212,168,67,0.05)] transition-colors' : ''}`}
+                      className={`text-left px-2 py-3 whitespace-nowrap ${col.field ? 'cursor-pointer select-none hover:bg-[rgba(212,168,67,0.05)] transition-colors' : ''}`}
                       onClick={col.field ? () => onSort(col.field!) : undefined}
                     >
                       <div className="flex items-center gap-1">
@@ -128,12 +129,12 @@ export function HistoryTable({
                         isSelected ? 'bg-[rgba(212,168,67,0.05)]' : ''
                       }`}
                     >
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-2 py-3 whitespace-nowrap">
                         <span className="text-xs font-mono font-bold text-[#D4A843]">
                           #{item.id}
                         </span>
                       </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-2 py-3 whitespace-nowrap">
                         <div className="flex items-center gap-1.5">
                           <span className="text-sm">{info?.icon && <info.icon size={14} strokeWidth={1.5} />}</span>
                           <span className="text-xs font-bold text-white">
@@ -148,31 +149,36 @@ export function HistoryTable({
                           )}
                         </div>
                       </td>
-                     <td className="px-4 py-3 whitespace-nowrap">
+                     <td className="px-2 py-3 whitespace-nowrap">
                         <span className="text-xs font-mono font-bold text-[#D4A843]">
                           {item.input.pre_fixed_rate === 1 ||  item.input.pre_fixed_rate === 0 ?  item.input.cdi_percentage : item.input.pre_fixed_rate}%
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-xs font-semibold text-white whitespace-nowrap">
+                      <td className="px-2 py-3 text-xs font-semibold text-white whitespace-nowrap">
                         {formatBRL(item.input.initial_capital)}
                       </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-2 py-3 whitespace-nowrap">
                         <span className="text-xs font-bold text-[#10C98A]">
                           {formatBRL(item.result.profit_liquid)}
                         </span>
                       </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-2 py-3 whitespace-nowrap">
                         <span className="text-xs font-semibold text-[#D4A843]">+{formatPercent(pct)}</span>
                       </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-2 py-3 whitespace-nowrap">
                         <span className="text-xs text-[#8A94A6]">{item.input.months}m</span>
                       </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-2 py-3 whitespace-nowrap">
+                        <span className="text-xs font-mono text-[#555]">
+                          {formatDate(item.input.application_date)}
+                        </span>
+                      </td>
+                      <td className="px-2 py-3 whitespace-nowrap">
                         <span className="text-xs font-mono text-[#555]">
                           {formatDate(item.input.redemption_date)}
                         </span>
                       </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-2 py-3 whitespace-nowrap">
                         <div className="flex items-center gap-1.5">
                           <button
                             onClick={(e) => { e.stopPropagation(); onSelect(item) }}
@@ -208,7 +214,7 @@ export function HistoryTable({
           </div>
 
           {items.length > 0 && (
-            <div className="flex items-center justify-between px-4 py-3 border-t border-[rgba(212,168,67,0.1)]">
+            <div className="flex items-center justify-between px-2 py-3 border-t border-[rgba(212,168,67,0.1)]">
               <span className="text-xs text-[#555]">
                 Página {currentPage} de {lastPage}
               </span>
