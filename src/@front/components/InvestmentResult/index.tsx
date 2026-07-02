@@ -34,7 +34,7 @@ export function InvestmentResult({ data, onClose, compact = false }: InvestmentR
 
   const stats = [
     { label: 'LUCRO LÍQUIDO MENSAL', value: formatBRL(result.profit_liquid), color: '#D4A843' },
-    { label: 'RENDIMENTO MENSAL', value: formatBRL(result.profit_liquid), color: '#6366F1' },
+    { label: 'RENDIMENTO MENSAL', value: formatBRL(result.profit_bruto), color: '#6366F1' },
     { label: 'LUCRO DIÁRIO LÍQUIDO', value: formatBRL(result.daily_profit_display), color: '#0D9E6E' },
     { label: 'Dias Úteis', value: String(result.business_days), color: '#8A94A6' },
   ]
