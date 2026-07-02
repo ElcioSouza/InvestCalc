@@ -7,7 +7,7 @@ import { useToast } from './ToastContext'
 
 const PAGE_SIZE = 10
 
-export type SortField = 'id' | 'investment_type' | 'cdi' | 'capital' | 'profit_liquid' | 'profit_percentage' | 'months' | 'redemption_date' | 'application_date'
+export type SortField = 'id' | 'investment_type' | 'cdi' | 'capital' | 'profit_liquid' | 'daily_profit_display' | 'profit_percentage' | 'months' | 'redemption_date' | 'application_date'
 export type SortDirection = 'asc' | 'desc'
 
 interface SortConfig {
@@ -84,6 +84,8 @@ export function HistoryProvider({ children }: { children: ReactNode }) {
           return (a.input.initial_capital - b.input.initial_capital) * dir
         case 'profit_liquid':
           return (a.result.profit_liquid - b.result.profit_liquid) * dir
+        case 'daily_profit_display':
+          return (a.result.daily_profit_display - b.result.daily_profit_display) * dir
         case 'profit_percentage':
           return (a.result.profit_percentage - b.result.profit_percentage) * dir
         case 'months':

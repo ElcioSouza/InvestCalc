@@ -33,7 +33,7 @@ export function InvestmentResult({ data, onClose, compact = false }: InvestmentR
   const info = INVESTMENT_TYPE_CONFIG[input.investment_type] ?? INVESTMENT_TYPE_CONFIG.cdb
 
   const stats = [
-    { label: 'Lucro Bruto', value: formatBRL(result.profit_bruto), color: '#D4A843' },
+    { label: 'Lucro Liquido', value: formatBRL(result.profit_bruto), color: '#D4A843' },
     { label: 'Lucro Mensal', value: formatBRL(result.monthly_profit_liquid), color: '#6366F1' },
     { label: 'Lucro Diário', value: formatBRL(result.daily_profit_display), color: '#0D9E6E' },
     { label: 'Dias Úteis', value: String(result.business_days), color: '#8A94A6' },

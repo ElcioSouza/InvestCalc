@@ -12,6 +12,7 @@ const COLUMNS: { label: string; field: SortField | null }[] = [
   { label: 'CDI', field: 'cdi' },
   { label: 'Capital', field: 'capital' },
   { label: 'Lucro L\u00EDq.', field: 'profit_liquid' },
+  { label: 'Lucro Di\u00E1rio', field: 'daily_profit_display' },
   { label: 'Rendimento', field: 'profit_percentage' },
   { label: 'Prazo', field: 'months' },
   { label: 'Aplica.', field: 'application_date' },
@@ -160,6 +161,11 @@ export function HistoryTable({
                       <td className="px-2 py-3 whitespace-nowrap">
                         <span className="text-xs font-bold text-[#10C98A]">
                           {formatBRL(item.result.profit_liquid)}
+                        </span>
+                      </td>
+                      <td className="px-2 py-3 whitespace-nowrap">
+                        <span className="text-xs font-bold text-[#6DD5FA]">
+                          {formatBRL(item.result.daily_profit_display)}
                         </span>
                       </td>
                       <td className="px-2 py-3 whitespace-nowrap">
