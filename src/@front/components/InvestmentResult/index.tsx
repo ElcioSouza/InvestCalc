@@ -33,8 +33,8 @@ export function InvestmentResult({ data, onClose, compact = false }: InvestmentR
   const info = INVESTMENT_TYPE_CONFIG[input.investment_type] ?? INVESTMENT_TYPE_CONFIG.cdb
 
   const stats = [
-    { label: 'LUCRO LÍQUIDO TOTAL', value: formatBRL(result.profit_liquid), color: '#D4A843' },
-    { label: 'LUCRO MENSAL LÍQUIDO', value: formatBRL(result.monthly_profit_liquid), color: '#6366F1' },
+    { label: 'LUCRO LÍQUIDO MENSAL', value: formatBRL(result.profit_liquid), color: '#D4A843' },
+    { label: 'RENDIMENTO MENSAL', value: formatBRL(result.profit_liquid), color: '#6366F1' },
     { label: 'LUCRO DIÁRIO LÍQUIDO', value: formatBRL(result.daily_profit_display), color: '#0D9E6E' },
     { label: 'Dias Úteis', value: String(result.business_days), color: '#8A94A6' },
   ]
